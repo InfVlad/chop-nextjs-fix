@@ -73,7 +73,7 @@ export default function Page() {
   }, [currentData]);
 
   useEffect(() => {
-    setSessionCount(0); // Reset session count on page load
+    setSessionCount(0); // Reset session count on page load+
   }, []);
 
   useEffect(() => {
@@ -278,21 +278,35 @@ export default function Page() {
         <Logo />
         <div className="flex flex-row items-center gap-4">
           <ModeToggle />
-          <Button
-            className="gap-2"
-            onClick={() => {
-              router.push("/api/auth/login");
-            }}
-          >
-            <LogIn className="h-4 w-4" />
-            Log In
-          </Button>
+
+          {!user ? (
+            <Button
+              className="gap-2"
+              onClick={() => {
+                router.push("/api/auth/login");
+              }}
+            >
+              <LogIn className="h-4 w-4" />
+              Log In
+            </Button>
+          ) : (
+            <Button
+              className="gap-2"
+              onClick={() => {
+                router.push("/api/auth/logout");
+              }}
+            >
+              <LogIn className="h-4 w-4" />
+              Log out
+            </Button>
+          )}
+
         </div>
       </header>
       {/* Main Content */}
       <div className="flex flex-col items-center flex-grow justify-center w-full">
         <main className="flex flex-col items-center w-full max-w-md">
-          <p className="text-3xl mb-4">👋 Hey {user?.name}!</p>
+          <p className="text-3xl mb-4">👋 Hey {user?.name ?? ""}!</p>
           <p className="text-sm mb-4 text-slate-500">
             Select one of the topics from below and start playing.
           </p>
