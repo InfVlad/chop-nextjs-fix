@@ -227,7 +227,8 @@ export default function Page() {
     }
   };
 
-  const isFormFilled = name.trim() && email.trim() && message.trim();
+  const isFormFilled = name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
+
 
   return (
     <div className="h-fit min-h-screen flex flex-col p-6">
