@@ -1,101 +1,291 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from "react";
+import { geography } from "@/data/geography";
+import { soccer } from "@/data/soccer";
+import { history } from "@/data/history";
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
+import { Progress } from "@/components/ui/progress";
+import Header from "@/components/header";
 import Footer from "@/components/footer";
+import CategoryButtons from "@/components/category-buttons";
+import QuestionCard from "@/components/question-card";
+import ChangeTopicDialog from "@/components/change-topic-dialog";
+import FeedbackDialog from "@/components/feedback-dialog";
+import CompletionDialog from "@/components/completion-dialog";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { useRouter } from "next/navigation";
-import Loading from "@/app/[locale]/loading";
-import TypingEffect from "@/lib/typing-effect";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
 
-export default function AuthPage() {
-  const { user, isLoading } = useUser();
-  const router = useRouter();
-  const [email, setEmail] = useState("");
+export default function Page() {
   const { toast } = useToast();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [userInput, setUserInput] = useState("");
+  const [hintMessage, setHintMessage] = useState("");
+  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [showContinueButton, setShowContinueButton] = useState(false);
+  const [currentData, setCurrentData] = useState(geography);
+  const [shuffledData, setShuffledData] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("geography");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isHintLoading, setIsHintLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isCongratulationsDialogOpen, setIsCongratulationsDialogOpen] =
+    useState(false);
+  const [progress, setProgress] = useState(0);
+  const [questionCount, setQuestionCount] = useState(0);
+  const [sessionCount, setSessionCount] = useState(0);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [pendingCategory, setPendingCategory] = useState<string | null>(null);
+  const [dontAskAgain, setDontAskAgain] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const { user } = useUser();
+  const baseUrl = "https://api-dev.chop.so";
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
 
-  const handleSignUp = async () => {
-    if (!email) return;
+  useEffect(() => {
+    const shuffledQuestions = shuffleArray([...currentData]);
+    setShuffledData(shuffledQuestions);
+    setCurrentIndex(0);
+  }, [currentData]);
 
-    try {
-      // Save the email
-      await fetch(`https://api.chop.so/api/email/register-email-notification?email=${encodeURIComponent(email)}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  useEffect(() => {
+    setProgress(((questionCount % 10) / 10) * 100);
+  }, [questionCount]);
 
-      // Send the thank you email
-      // await fetch(
-      //   `https://api.chop.so/api/email/send-email?to=${encodeURIComponent(email)}&subject=${encodeURIComponent("Thank You for Signing Up!")}&html_content=${encodeURIComponent(
-      //     "<p>Thank you for signing up! We will reach out to you in seven days for our release.</p>"
-      //   )}&secret_key=SECRET_KEY`,
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
+  const shuffleArray = (array: any) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
-      toast({
-        title: "Thank you for signing up!",
-        description: "Please, check your email.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "There was an issue with signing up. Please try again later.",
-        variant: "destructive",
-      });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserInput(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && userInput.trim()) {
+      validateAnswer();
     }
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  const validateAnswer = async () => {
+    if (!userInput.trim()) {
+      setFeedbackMessage("Please enter an answer.");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const currentQuestion = shuffledData[currentIndex]?.question_text;
+      const response = await fetch(
+        `${baseUrl}/api/assignments/check-response?question=${encodeURIComponent(
+          currentQuestion
+        )}&response=${encodeURIComponent(userInput)}`,
+        {
+          method: "POST",
+        }
+      );
+      const data = await response.json();
+      setFeedbackMessage(data || "No message found in the response");
+      setHintMessage("");
+      setShowContinueButton(true);
+    } catch (error) {
+      setFeedbackMessage("An error occurred. Try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  if (!user) {
-    return (
-      <div className="flex flex-col min-h-[100dvh]">
-        <main className="flex-1 flex flex-col justify-center items-center text-center py-12 md:py-24 lg:py-32 border-b">
-          <div className="space-y-6 -w-3xl">
-            <div className="flex flex-col items-center">
-              <div className="flex items-center space-x-2">
-                <p className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">Learn</p>
-                <TypingEffect
-                  texts={[
-                    { word: "soccer", emoji: "⚽️" },
-                    { word: "poker", emoji: "🃏" },
-                    { word: "chemistry", emoji: "🔬" },
-                    { word: "Italian", emoji: "🇮🇹" },
-                  ]}
-                  className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl"
-                />
-              </div>
-              <p className="text-gray-500 text-xl md:text-2xl dark:text-gray-400 mt-2">
-                The first generative learning platform.
-              </p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Button onClick={handleSignUp}>Sign Up</Button>
-            </div>
-          </div>
+
+  const handleHintClick = async () => {
+    setIsHintLoading(true);
+    try {
+      const currentQuestion = shuffledData[currentIndex]?.question_text;
+      const response = await fetch(
+        `${baseUrl}/api/assignments/hint?question=${encodeURIComponent(
+          currentQuestion
+        )}`,
+        {
+          method: "POST",
+        }
+      );
+      const data = await response.json();
+      setHintMessage(data || "No hint found in the response");
+      setFeedbackMessage("");
+    } catch (error) {
+      setHintMessage("An error occurred. Try again later.");
+    } finally {
+      setIsHintLoading(false);
+    }
+  };
+
+
+  const handleContinue = () => {
+    // Increment the current index
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % currentData.length);
+
+    // Increment the question count
+    setQuestionCount((prevCount) => {
+      const newCount = prevCount + 1;
+
+      // Update progress bar
+      setProgress(((newCount % 10) / 10) * 100);
+
+      // Check if it's time to display the CompletionDialog
+      if (newCount % 10 === 0) {
+        setSessionCount((prevSessionCount) => prevSessionCount + 1);
+        setIsCongratulationsDialogOpen(true);
+      }
+
+      return newCount;
+    });
+
+    // Reset input fields and messages
+    setUserInput("");
+    setHintMessage("");
+    setFeedbackMessage("");
+    setShowContinueButton(false);
+  };
+
+
+  const handleCategoryClick = (category: string) => {
+    if (dontAskAgain) {
+      switchCategory(category);
+    } else if (progress > 0) {
+      setPendingCategory(category);
+      setIsAlertOpen(true);
+    } else {
+      switchCategory(category);
+    }
+  };
+
+  const switchCategory = (category: string) => {
+    setSelectedCategory(category);
+    switch (category) {
+      case "geography":
+        setCurrentData(geography);
+        break;
+      case "history":
+        setCurrentData(history);
+        break;
+      case "soccer":
+        setCurrentData(soccer);
+        break;
+      default:
+        setCurrentData(geography);
+    }
+    setCurrentIndex(0);
+    setUserInput("");
+    setHintMessage("");
+    setFeedbackMessage("");
+    setShowContinueButton(false);
+    setProgress(0);
+    setQuestionCount(0);
+  };
+
+  const confirmCategoryChange = () => {
+    if (pendingCategory) {
+      switchCategory(pendingCategory);
+      setPendingCategory(null);
+    }
+    setIsAlertOpen(false);
+  };
+
+  const handleFeedbackSubmit = async () => {
+    setIsSubmitLoading(true); // Set loading state to true
+    try {
+      const response = await fetch(
+        "https://api-dev.chop.so/api/feedback/send-feedback",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: message.trim(),
+            name: name.trim(),
+            email: email.trim(),
+          }),
+        }
+      );
+      if (response.ok) {
+        toast({ description: "Thank you for your feedback!" })
+        setIsDialogOpen(false);
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        toast({ description: "An error ocurred. Please, try again later." })
+      }
+    } catch (error) {
+      toast({ description: "An error ocurred. Please, try again later." })
+    } finally {
+      setIsSubmitLoading(false); // Set loading state to false
+    }
+  };
+
+  const isFormFilled = name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
+
+
+  return (
+    <div className="h-fit min-h-screen flex flex-col p-6">
+      <Header />
+      <div className="flex flex-col items-center flex-grow justify-center w-full">
+        <main className="flex flex-col items-center w-full max-w-md">
+          <p className="text-3xl mb-4">
+            👋 Hey {user ? user?.name?.split(" ")[0] : ""}!
+          </p>
+          <p className="text-sm mb-4 text-slate-500">
+            Select one of the topics from below and start playing.
+          </p>
+          <CategoryButtons
+            selectedCategory={selectedCategory}
+            handleCategoryClick={handleCategoryClick}
+          />
+          <Progress value={progress} className="w-[100%] mb-4 h-2" />
+          <QuestionCard
+            question={shuffledData[currentIndex]?.question_text}
+            userInput={userInput}
+            handleInputChange={handleInputChange}
+            handleKeyDown={handleKeyDown}
+            validateAnswer={validateAnswer}
+            handleHintClick={handleHintClick}
+            handleContinue={handleContinue}
+            isLoading={isLoading}
+            showContinueButton={showContinueButton}
+            hintMessage={hintMessage}
+            feedbackMessage={feedbackMessage}
+            isHintLoading={isHintLoading}
+          />
+          <ChangeTopicDialog
+            isAlertOpen={isAlertOpen}
+            setIsAlertOpen={setIsAlertOpen}
+            confirmCategoryChange={confirmCategoryChange}
+          />
+          <FeedbackDialog
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+            handleFeedbackSubmit={handleFeedbackSubmit}
+            isFormFilled={isFormFilled}
+            isSubmitLoading={isSubmitLoading}
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            message={message}
+            setMessage={setMessage}
+          />
+          <CompletionDialog
+            isCongratulationsDialogOpen={isCongratulationsDialogOpen}
+            setIsCongratulationsDialogOpen={setIsCongratulationsDialogOpen}
+            sessionCount={sessionCount}
+          />
         </main>
       </div>
-    );
-  } else {
-    return router.push("/home");
-  }
+      <Footer />
+    </div>
+  );
 }
