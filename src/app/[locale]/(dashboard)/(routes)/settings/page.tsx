@@ -2,7 +2,7 @@
 import { useSchemaStore } from "@/providers/schema-store-provider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import LanguageDropdown from "../../../../../components/language-dropdown";
+import LanguageDropdown from "@/components/language-dropdown";
 import { Switch } from "@/components/ui/switch";
 
 
