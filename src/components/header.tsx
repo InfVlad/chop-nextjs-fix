@@ -13,6 +13,7 @@ export default function Header() {
   const { user } = useUser();
   const router = useRouter();
   const t = useTranslations("");
+
   return (
     <header className="flex flex-row items-center justify-between">
       <Logo />
@@ -30,18 +31,8 @@ export default function Header() {
             {t("Log_in")}
           </Button>
         ) : (
-          // <Button
-          //   className="gap-2"
-          //   onClick={() => {
-          //     router.push("/api/auth/logout");
-          //   }}
-          // >
-          //   <LogIn className="h-4 w-4" />
-          //   {t("Log_out")}
-          // </Button>
           <AvatarDropdownMenu />
-        )
-        }
+        )}
       </div>
     </header>
   );

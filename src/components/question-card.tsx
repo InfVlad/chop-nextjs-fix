@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon, LoaderCircle, Info } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "next-intl"; // Retained from develop
 
 export default function QuestionCard({
   question,
@@ -33,7 +33,7 @@ export default function QuestionCard({
   feedbackMessage?: string;
   isHintLoading: boolean;
 }) {
-  const t = useTranslations("");
+  const t = useTranslations(""); // Retained from develop
 
   return (
     <Card className="flex flex-col w-full items-center justify-center h-64">
@@ -42,7 +42,7 @@ export default function QuestionCard({
         <div className="flex flex-row items-center justify-center gap-2 w-full">
           <Input
             type="text"
-            placeholder={t("Enter_your_answer")}
+            placeholder={t("Enter_your_answer")} // Retained from develop
             value={userInput}
             className="w-80"
             onChange={handleInputChange}
@@ -80,11 +80,11 @@ export default function QuestionCard({
             ) : (
               <Info className="h-4 w-4" />
             )}{" "}
-            {isHintLoading ? t("Loading") : t("Hint")}
+            {isHintLoading ? t("Loading") : t("Hint")} {/* Retained from develop */}
           </Button>
         ) : (
           <Button variant="default" className="mt-4" onClick={handleContinue}>
-            {t("Continue")}
+            {t("Continue")} {/* Retained from develop */}
           </Button>
         )}
       </CardContent>
