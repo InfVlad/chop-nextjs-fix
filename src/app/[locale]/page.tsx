@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { geography } from "@/data/geography";
 import { soccer } from "@/data/soccer";
 import { history } from "@/data/history";
-import { ToastAction } from "@/components/ui/toast"
-import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -15,15 +15,24 @@ import ChangeTopicDialog from "@/components/change-topic-dialog";
 import FeedbackDialog from "@/components/feedback-dialog";
 import CompletionDialog from "@/components/completion-dialog";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useSchemaStore } from "@/providers/schema-store-provider"; // Retained from develop
+import { useParams, usePathname } from "next/navigation"; // Retained from develop
+import { useTranslations } from "next-intl"; // Retained from develop
 
 export default function Page() {
   const { toast } = useToast();
+  const { remember_skip, setRememberSkip } = useSchemaStore((state) => state); // Retained from develop
+  const pathName = usePathname(); // Retained from develop
+  const regex = /^\/([^/]+)/; // Retained from develop
+  const match: any = pathName.match(regex); // Retained from develop
+  const lang: "en" | "es" = match ? match[1] : "en"; // Retained from develop
+  const t = useTranslations(""); // Retained from develop
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [hintMessage, setHintMessage] = useState("");
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [showContinueButton, setShowContinueButton] = useState(false);
-  const [currentData, setCurrentData] = useState(geography);
+  const [currentData, setCurrentData] = useState(geography[lang]); // Retained from develop
   const [shuffledData, setShuffledData] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("geography");
   const [isLoading, setIsLoading] = useState(false);
@@ -36,13 +45,12 @@ export default function Page() {
   const [sessionCount, setSessionCount] = useState(0);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [pendingCategory, setPendingCategory] = useState<string | null>(null);
-  const [dontAskAgain, setDontAskAgain] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const { user } = useUser();
   const baseUrl = "https://api-dev.chop.so";
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+  const { user } = useUser();
 
   useEffect(() => {
     const shuffledQuestions = shuffleArray([...currentData]);
@@ -99,7 +107,6 @@ export default function Page() {
     }
   };
 
-
   const handleHintClick = async () => {
     setIsHintLoading(true);
     try {
@@ -121,7 +128,6 @@ export default function Page() {
       setIsHintLoading(false);
     }
   };
-
 
   const handleContinue = () => {
     // Increment the current index
@@ -150,9 +156,8 @@ export default function Page() {
     setShowContinueButton(false);
   };
 
-
   const handleCategoryClick = (category: string) => {
-    if (dontAskAgain) {
+    if (remember_skip) {
       switchCategory(category);
     } else if (progress > 0) {
       setPendingCategory(category);
@@ -166,16 +171,16 @@ export default function Page() {
     setSelectedCategory(category);
     switch (category) {
       case "geography":
-        setCurrentData(geography);
+        setCurrentData(geography[lang]); // Retained from develop
         break;
       case "history":
-        setCurrentData(history);
+        setCurrentData(history[lang]); // Retained from develop
         break;
       case "soccer":
-        setCurrentData(soccer);
+        setCurrentData(soccer[lang]); // Retained from develop
         break;
       default:
-        setCurrentData(geography);
+        setCurrentData(geography[lang]); // Retained from develop
     }
     setCurrentIndex(0);
     setUserInput("");
@@ -190,12 +195,13 @@ export default function Page() {
     if (pendingCategory) {
       switchCategory(pendingCategory);
       setPendingCategory(null);
+      setRememberSkip(true); // Retained from develop
     }
     setIsAlertOpen(false);
   };
 
   const handleFeedbackSubmit = async () => {
-    setIsSubmitLoading(true); // Set loading state to true
+    setIsSubmitLoading(true);
     try {
       const response = await fetch(
         "https://api-dev.chop.so/api/feedback/send-feedback",
@@ -212,23 +218,27 @@ export default function Page() {
         }
       );
       if (response.ok) {
-        toast({ description: "Thank you for your feedback!" })
+        toast({ description: t("Thank_you_for_your_feedback!") }); // Retained from develop
         setIsDialogOpen(false);
         setName("");
         setEmail("");
         setMessage("");
       } else {
-        toast({ description: "An error ocurred. Please, try again later." })
+        toast({
+          description: t("An_error_ocurred._Please_,_try_again_later."),
+        }); // Retained from develop
       }
     } catch (error) {
-      toast({ description: "An error ocurred. Please, try again later." })
+      toast({
+        description: t("An_error_ocurred._Please_,_try_again_later."),
+      }); // Retained from develop
     } finally {
-      setIsSubmitLoading(false); // Set loading state to false
+      setIsSubmitLoading(false);
     }
   };
 
-  const isFormFilled = name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
-
+  const isFormFilled =
+    name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
 
   return (
     <div className="h-fit min-h-screen flex flex-col p-6">
@@ -239,7 +249,7 @@ export default function Page() {
             👋 Hey {user ? user?.name?.split(" ")[0] : ""}!
           </p>
           <p className="text-sm mb-4 text-slate-500">
-            Select one of the topics from below and start playing.
+            {t("Select_one_of_the_topics_from_below_and_start_playing")} {/* Retained from develop */}
           </p>
           <CategoryButtons
             selectedCategory={selectedCategory}
@@ -281,7 +291,6 @@ export default function Page() {
           <CompletionDialog
             isCongratulationsDialogOpen={isCongratulationsDialogOpen}
             setIsCongratulationsDialogOpen={setIsCongratulationsDialogOpen}
-            sessionCount={sessionCount}
           />
         </main>
       </div>
