@@ -10,7 +10,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useTranslations } from "next-intl"; // Retained from develop
+import { useTranslations } from "next-intl";
 
 export default function ChangeTopicDialog({
   isAlertOpen,
@@ -21,17 +21,17 @@ export default function ChangeTopicDialog({
   setIsAlertOpen: (open: boolean) => void;
   confirmCategoryChange: () => void;
 }) {
-  const t = useTranslations(""); // Retained from develop
+  const t = useTranslations("");
 
   return (
     <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("Change_Topic?")}</AlertDialogTitle> {/* Retained from develop */}
+          <AlertDialogTitle>{t("Change_Topic?")}</AlertDialogTitle>
           <AlertDialogDescription>
             {t(
               "Are_you_sure_you_want_to_change_the_topic?_This_will_lose_all_your_progress_in_the_current_session"
-            )} {/* Retained from develop */}
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="flex flex-row items-center gap-2">
@@ -40,15 +40,15 @@ export default function ChangeTopicDialog({
             htmlFor="dontAskAgain"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            {t("Dont_ask_me_again")} {/* Retained from develop */}
+            {t("Dont_ask_me_again")}
           </label>
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setIsAlertOpen(false)}>
-            {t("Cancel")} {/* Retained from develop */}
+            {t("Cancel")}
           </AlertDialogCancel>
           <AlertDialogAction onClick={confirmCategoryChange}>
-            {t("Confirm")} {/* Retained from develop */}
+            {t("Confirm")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
