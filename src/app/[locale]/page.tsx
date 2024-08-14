@@ -15,11 +15,13 @@ import ChangeTopicDialog from "@/components/change-topic-dialog";
 import FeedbackDialog from "@/components/feedback-dialog";
 import CompletionDialog from "@/components/completion-dialog";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useSchemaStore } from "@/providers/schema-store-provider";
 import { useParams, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 export default function Page() {
   const { toast } = useToast();
+  const { remember_skip, setRememberSkip } = useSchemaStore((state) => state);
   const pathName = usePathname();
   const regex = /^\/([^/]+)/;
   const match: any = pathName.match(regex);
@@ -43,7 +45,6 @@ export default function Page() {
   const [sessionCount, setSessionCount] = useState(0);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [pendingCategory, setPendingCategory] = useState<string | null>(null);
-  const [dontAskAgain, setDontAskAgain] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -156,7 +157,7 @@ export default function Page() {
   };
 
   const handleCategoryClick = (category: string) => {
-    if (dontAskAgain) {
+    if (remember_skip) {
       switchCategory(category);
     } else if (progress > 0) {
       setPendingCategory(category);
@@ -194,12 +195,13 @@ export default function Page() {
     if (pendingCategory) {
       switchCategory(pendingCategory);
       setPendingCategory(null);
+      setRememberSkip(true);
     }
     setIsAlertOpen(false);
   };
 
   const handleFeedbackSubmit = async () => {
-    setIsSubmitLoading(true); // Set loading state to true
+    setIsSubmitLoading(true);
     try {
       const response = await fetch(
         "https://api-dev.chop.so/api/feedback/send-feedback",
@@ -216,12 +218,14 @@ export default function Page() {
         }
       );
       if (response.ok) {
+
         toast({ description: t("Thank_you_for_your_feedback!") });
         setIsDialogOpen(false);
         setName("");
         setEmail("");
         setMessage("");
       } else {
+
         toast({ description: t("An_error_ocurred._Please_,_try_again_later.") });
       }
     } catch (error) {
