@@ -189,112 +189,113 @@ export default function Page() {
         setProgress(0);
         setQuestionCount(0);
     };
+  }
 
-    const confirmCategoryChange = () => {
-      if (pendingCategory) {
-        switchCategory(pendingCategory);
-        setPendingCategory(null);
-        setRememberSkip(true);
-      }
-      setIsAlertOpen(false);
-    };
+  const confirmCategoryChange = () => {
+    if (pendingCategory) {
+      switchCategory(pendingCategory);
+      setPendingCategory(null);
+      setRememberSkip(true);
+    }
+    setIsAlertOpen(false);
+  };
 
-    const handleFeedbackSubmit = async () => {
-      setIsSubmitLoading(true);
-      try {
-        const response = await fetch(
-          "https://api-dev.chop.so/api/feedback/send-feedback",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              message: message.trim(),
-              name: name.trim(),
-              email: email.trim(),
-            }),
-          }
-        );
-        if (response.ok) {
-          toast({ description: t("Thank_you_for_your_feedback!") });
-          setIsDialogOpen(false);
-          setName("");
-          setEmail("");
-          setMessage("");
-        } else {
-          toast({
-            description: t("An_error_ocurred_Please_try_again_later"),
-          });
+  const handleFeedbackSubmit = async () => {
+    setIsSubmitLoading(true);
+    try {
+      const response = await fetch(
+        "https://api-dev.chop.so/api/feedback/send-feedback",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: message.trim(),
+            name: name.trim(),
+            email: email.trim(),
+          }),
         }
-      } catch (error) {
+      );
+      if (response.ok) {
+        toast({ description: t("Thank_you_for_your_feedback!") });
+        setIsDialogOpen(false);
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
         toast({
           description: t("An_error_ocurred_Please_try_again_later"),
         });
-      } finally {
-        setIsSubmitLoading(false);
       }
-    };
+    } catch (error) {
+      toast({
+        description: t("An_error_ocurred_Please_try_again_later"),
+      });
+    } finally {
+      setIsSubmitLoading(false);
+    }
+  };
 
-    const isFormFilled =
-      name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
+  const isFormFilled =
+    name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
 
-    return (
-      <div className="h-fit min-h-screen flex flex-col p-6">
-        <Header />
-        <div className="flex flex-col items-center flex-grow justify-center w-full">
-          <main className="flex flex-col items-center w-full max-w-md">
-            <p className="text-3xl mb-4">
-              👋 Hey {user ? user?.name?.split(" ")[0] : ""}!
-            </p>
-            <p className="text-sm mb-4 text-slate-500">
-              {t("Select_one_of_the_topics_from_below_and_start_playing")}
-            </p>
-            <CategoryButtons
-              selectedCategory={selectedCategory}
-              handleCategoryClick={handleCategoryClick}
-            />
-            <Progress value={progress} className="w-[100%] mb-4 h-2" />
-            <QuestionCard
-              question={shuffledData[currentIndex]?.question_text}
-              userInput={userInput}
-              handleInputChange={handleInputChange}
-              handleKeyDown={handleKeyDown}
-              validateAnswer={validateAnswer}
-              handleHintClick={handleHintClick}
-              handleContinue={handleContinue}
-              isLoading={isLoading}
-              showContinueButton={showContinueButton}
-              hintMessage={hintMessage}
-              feedbackMessage={feedbackMessage}
-              isHintLoading={isHintLoading}
-            />
-            <ChangeTopicDialog
-              isAlertOpen={isAlertOpen}
-              setIsAlertOpen={setIsAlertOpen}
-              confirmCategoryChange={confirmCategoryChange}
-            />
-            <FeedbackDialog
-              isDialogOpen={isDialogOpen}
-              setIsDialogOpen={setIsDialogOpen}
-              handleFeedbackSubmit={handleFeedbackSubmit}
-              isFormFilled={isFormFilled}
-              isSubmitLoading={isSubmitLoading}
-              name={name}
-              setName={setName}
-              email={email}
-              setEmail={setEmail}
-              message={message}
-              setMessage={setMessage}
-            />
-            <CompletionDialog
-              isCongratulationsDialogOpen={isCongratulationsDialogOpen}
-              setIsCongratulationsDialogOpen={setIsCongratulationsDialogOpen}
-            />
-          </main>
-        </div>
-        <Footer />
+  return (
+    <div className="h-fit min-h-screen flex flex-col p-6">
+      <Header />
+      <div className="flex flex-col items-center flex-grow justify-center w-full">
+        <main className="flex flex-col items-center w-full max-w-md">
+          <p className="text-3xl mb-4">
+            👋 Hey {user ? user?.name?.split(" ")[0] : ""}!
+          </p>
+          <p className="text-sm mb-4 text-slate-500">
+            {t("Select_one_of_the_topics_from_below_and_start_playing")}
+          </p>
+          <CategoryButtons
+            selectedCategory={selectedCategory}
+            handleCategoryClick={handleCategoryClick}
+          />
+          <Progress value={progress} className="w-[100%] mb-4 h-2" />
+          <QuestionCard
+            question={shuffledData[currentIndex]?.question_text}
+            userInput={userInput}
+            handleInputChange={handleInputChange}
+            handleKeyDown={handleKeyDown}
+            validateAnswer={validateAnswer}
+            handleHintClick={handleHintClick}
+            handleContinue={handleContinue}
+            isLoading={isLoading}
+            showContinueButton={showContinueButton}
+            hintMessage={hintMessage}
+            feedbackMessage={feedbackMessage}
+            isHintLoading={isHintLoading}
+          />
+          <ChangeTopicDialog
+            isAlertOpen={isAlertOpen}
+            setIsAlertOpen={setIsAlertOpen}
+            confirmCategoryChange={confirmCategoryChange}
+          />
+          <FeedbackDialog
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+            handleFeedbackSubmit={handleFeedbackSubmit}
+            isFormFilled={isFormFilled}
+            isSubmitLoading={isSubmitLoading}
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            message={message}
+            setMessage={setMessage}
+          />
+          <CompletionDialog
+            isCongratulationsDialogOpen={isCongratulationsDialogOpen}
+            setIsCongratulationsDialogOpen={setIsCongratulationsDialogOpen}
+          />
+        </main>
       </div>
-    );
-  }
+      <Footer />
+    </div>
+  );
 }
+
