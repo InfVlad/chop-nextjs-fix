@@ -8,18 +8,18 @@ import {
   AlertDialogDescription,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "next-intl"; 
 
 export default function CompletionDialog({
   isCongratulationsDialogOpen,
   setIsCongratulationsDialogOpen,
-  //sessionCount,
+  //sessionCount, 
 }: {
   isCongratulationsDialogOpen: boolean;
   setIsCongratulationsDialogOpen: (open: boolean) => void;
-  //sessionCount: number;
+  //sessionCount: number; 
 }) {
-  const t = useTranslations("");
+  const t = useTranslations(""); 
 
   return (
     <AlertDialog
@@ -29,10 +29,8 @@ export default function CompletionDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t("Congratulations")}</AlertDialogTitle>{" "}
-          
           <AlertDialogDescription>
             {t("You_have_completed_a_study_session")}{" "}
-            
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
