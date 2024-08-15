@@ -19,7 +19,7 @@ export default function Header() {
     <header className="flex flex-row items-center justify-between">
       <Logo />
       <div className="flex flex-row items-center gap-4">
-        {/* <SearchBarUser /> */}
+        <SearchBarUser />
         <LanguageCombobox />
         <ModeToggle />
         {!user ? (
