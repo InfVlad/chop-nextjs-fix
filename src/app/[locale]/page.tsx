@@ -1,9 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { geography } from "@/data/geography";
-import { soccer } from "@/data/soccer";
-import { history } from "@/data/history";
+import { geography } from "@/data/topics/geography";
+import { soccer } from "@/data/topics/soccer";
+import { history } from "@/data/topics/history";
+import { artHistory } from "@/data/topics/art-history";
+import { basketball } from "@/data/topics/basket";
+import { formula1 } from "@/data/topics/formula1";
+import { italy } from "@/data/topics/italy";
+import { tennis } from "@/data/topics/tennis";
+
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
@@ -179,6 +185,21 @@ export default function Page() {
       case "soccer":
         setCurrentData(soccer[lang]);
         break;
+      case "art-history":
+        setCurrentData(artHistory[lang]);
+        break;
+      case "basketball":
+        setCurrentData(basketball[lang]);
+        break;
+      case "formula1":
+        setCurrentData(formula1[lang]);
+        break;
+      case "italy":
+        setCurrentData(italy[lang]);
+        break;
+      case "tennis":
+        setCurrentData(tennis[lang]);
+        break;
       default:
         setCurrentData(geography[lang]);
         setCurrentIndex(0);
@@ -190,6 +211,7 @@ export default function Page() {
         setQuestionCount(0);
     };
   }
+
 
   const confirmCategoryChange = () => {
     if (pendingCategory) {
