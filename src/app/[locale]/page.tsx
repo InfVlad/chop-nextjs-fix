@@ -181,15 +181,15 @@ export default function Page() {
         break;
       default:
         setCurrentData(geography[lang]);
-    }
-    setCurrentIndex(0);
-    setUserInput("");
-    setHintMessage("");
-    setFeedbackMessage("");
-    setShowContinueButton(false);
-    setProgress(0);
-    setQuestionCount(0);
-  };
+        setCurrentIndex(0);
+        setUserInput("");
+        setHintMessage("");
+        setFeedbackMessage("");
+        setShowContinueButton(false);
+        setProgress(0);
+        setQuestionCount(0);
+    };
+  }
 
   const confirmCategoryChange = () => {
     if (pendingCategory) {
@@ -225,12 +225,12 @@ export default function Page() {
         setMessage("");
       } else {
         toast({
-          description: t("An_error_ocurred._Please_,_try_again_later."),
+          description: t("An_error_ocurred_Please_try_again_later"),
         });
       }
     } catch (error) {
       toast({
-        description: t("An_error_ocurred._Please_,_try_again_later."),
+        description: t("An_error_ocurred_Please_try_again_later"),
       });
     } finally {
       setIsSubmitLoading(false);
@@ -298,3 +298,4 @@ export default function Page() {
     </div>
   );
 }
+
