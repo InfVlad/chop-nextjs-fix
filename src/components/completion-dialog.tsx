@@ -13,11 +13,11 @@ import { useTranslations } from "next-intl";
 export default function CompletionDialog({
   isCongratulationsDialogOpen,
   setIsCongratulationsDialogOpen,
-
+  //sessionCount,
 }: {
   isCongratulationsDialogOpen: boolean;
   setIsCongratulationsDialogOpen: (open: boolean) => void;
-
+  //sessionCount: number;
 }) {
   const t = useTranslations("");
 
@@ -28,9 +28,9 @@ export default function CompletionDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("Congratulations")}</AlertDialogTitle>
+          <AlertDialogTitle>{t("Congratulations")}</AlertDialogTitle>{" "}
           <AlertDialogDescription>
-            {t("You_have_completed_a_study_session")}
+            {t("You_have_completed_a_study_session")}{" "}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

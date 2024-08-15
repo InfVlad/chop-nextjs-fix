@@ -3,8 +3,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowRightIcon, LoaderCircle, Info } from "lucide-react";
+import { ArrowRightIcon, LoaderCircle, Info, Volume2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+
+const TextToSpeechButton = ({ text }: { text: string }) => {
+  const speak = () => {
+    if ("speechSynthesis" in window) {
+      console.log(text);
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Your browser does not support Text to Speech.");
+    }
+  };
+
+  return (
+    <button onClick={speak} className="ml-2">
+      <Volume2 className="w-4 h-4" />
+    </button>
+  );
+};
 
 export default function QuestionCard({
   question,
@@ -38,7 +56,10 @@ export default function QuestionCard({
   return (
     <Card className="flex flex-col w-full items-center justify-center h-64">
       <CardContent className="flex flex-col items-center justify-center p-6">
-        <Label className="text-xl mb-4 text-center">{question}</Label>
+        <div className="flex items-center justify-center mb-4">
+          <Label className="text-xl text-center">{question}</Label>
+          <TextToSpeechButton text={question} />
+        </div>
         <div className="flex flex-row items-center justify-center gap-2 w-full">
           <Input
             type="text"
