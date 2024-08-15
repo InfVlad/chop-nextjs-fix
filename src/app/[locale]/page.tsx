@@ -231,10 +231,15 @@ export default function Page() {
         toast({
           description: t("An_error_ocurred_Please_try_again_later"),
         });
-      } finally {
-        setIsSubmitLoading(false);
       }
-    };
+    } catch (error) {
+      toast({
+        description: t("An_error_ocurred_Please_try_again_later"),
+      });
+    } finally {
+      setIsSubmitLoading(false);
+    }
+  };
 
     const isFormFilled =
       name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
