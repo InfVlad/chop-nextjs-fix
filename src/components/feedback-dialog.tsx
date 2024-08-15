@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LoaderCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { useTranslations } from "next-intl"; 
+import { useTranslations } from "next-intl";
 
 export default function FeedbackDialog({
   isDialogOpen,
@@ -40,7 +40,7 @@ export default function FeedbackDialog({
   message: string;
   setMessage: (message: string) => void;
 }) {
-  const t = useTranslations(""); 
+  const t = useTranslations("");
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -59,7 +59,7 @@ export default function FeedbackDialog({
           <DialogDescription>
             {t(
               "We_would_love_to_hear_your_thoughts_Please_share_your_feedback_below"
-            )}{" "}
+            )}{" "}            
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
@@ -101,7 +101,7 @@ export default function FeedbackDialog({
             {isSubmitLoading ? (
               <LoaderCircle className="animate-spin h-4 w-4 mr-2" />
             ) : null}
-            {isSubmitLoading ? t("Loading") : t("Submit")}{" "}
+            {isSubmitLoading ? t("Loading") : t("Submit")}{" "}            
           </Button>
         </DialogFooter>
       </DialogContent>

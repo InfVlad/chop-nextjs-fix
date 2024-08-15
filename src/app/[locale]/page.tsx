@@ -15,16 +15,16 @@ import ChangeTopicDialog from "@/components/change-topic-dialog";
 import FeedbackDialog from "@/components/feedback-dialog";
 import CompletionDialog from "@/components/completion-dialog";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { useSchemaStore } from "@/providers/schema-store-provider";
-import { useParams, usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useSchemaStore } from "@/providers/schema-store-provider"; 
+import { useParams, usePathname } from "next/navigation"; 
+import { useTranslations } from "next-intl"; 
 
 export default function Page() {
   const { toast } = useToast();
-  const { remember_skip, setRememberSkip } = useSchemaStore((state) => state);
-  const pathName = usePathname();
-  const regex = /^\/([^/]+)/;
-  const match: any = pathName.match(regex);
+  const { remember_skip, setRememberSkip } = useSchemaStore((state) => state); 
+  const pathName = usePathname(); 
+  const regex = /^\/([^/]+)/; 
+  const match: any = pathName.match(regex); 
   const lang: "en" | "es" = match ? match[1] : "en";
   const t = useTranslations("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,7 +32,7 @@ export default function Page() {
   const [hintMessage, setHintMessage] = useState("");
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [showContinueButton, setShowContinueButton] = useState(false);
-  const [currentData, setCurrentData] = useState(geography[lang]);
+  const [currentData, setCurrentData] = useState(geography[lang]); 
   const [shuffledData, setShuffledData] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("geography");
   const [isLoading, setIsLoading] = useState(false);
@@ -180,8 +180,7 @@ export default function Page() {
         setCurrentData(soccer[lang]); 
         break;
       default:
-        setCurrentData(geography[lang]); 
-    }
+        setCurrentData(geography[lang]);
     setCurrentIndex(0);
     setUserInput("");
     setHintMessage("");
@@ -226,7 +225,7 @@ export default function Page() {
       } else {
         toast({
           description: t("An_error_ocurred_Please_try_again_later"),
-        }); 
+        });
       }
     } catch (error) {
       toast({
