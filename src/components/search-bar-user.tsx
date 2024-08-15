@@ -8,6 +8,7 @@ export default function SearchBarUser() {
   const [results, setResults] = useState([]);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   useEffect(() => {
     if (query.length > 2) {
       const fetchData = async () => {
@@ -37,14 +38,11 @@ export default function SearchBarUser() {
         onChange={(e) => setQuery(e.target.value)}
       />
       <Button
-        type="submit"
-        variant="outline"
-        className="h-9 w-9 flex items-center justify-center rounded-full"
+        variant="secondary"
+        size="icon"
       >
-        <span className="sr-only">Search</span>
         <SearchIcon className="w-4 h-4" />
       </Button>
-      {/* Aquí podrías renderizar los resultados de la búsqueda */}
     </div>
   );
 }
