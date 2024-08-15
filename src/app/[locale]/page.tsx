@@ -202,15 +202,15 @@ export default function Page() {
         break;
       default:
         setCurrentData(geography[lang]);
-        setCurrentIndex(0);
-        setUserInput("");
-        setHintMessage("");
-        setFeedbackMessage("");
-        setShowContinueButton(false);
-        setProgress(0);
-        setQuestionCount(0);
-    };
-  }
+    }
+    setCurrentIndex(0);
+    setUserInput("");
+    setHintMessage("");
+    setFeedbackMessage("");
+    setShowContinueButton(false);
+    setProgress(0);
+    setQuestionCount(0);
+  };
 
 
   const confirmCategoryChange = () => {
