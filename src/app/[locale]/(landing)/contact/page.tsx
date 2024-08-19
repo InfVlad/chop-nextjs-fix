@@ -53,7 +53,7 @@ export default function ContactPage() {
         title: "Message Sent",
         description: "Your message has been sent successfully.",
       });
-      reset();
+      setTimeout(() => reset(), 1000);
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
