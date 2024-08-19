@@ -213,6 +213,7 @@ export default function Page() {
   };
 
 
+
   const confirmCategoryChange = () => {
     if (pendingCategory) {
       switchCategory(pendingCategory);
