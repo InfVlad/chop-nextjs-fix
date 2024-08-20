@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
-import { DatePicker } from '../../../../../components/date-picker'
+import { DatePicker } from '@/components/date-picker'
 import { GenderRadioGroup } from '@/components/gender-radio-group'
 
 import axios from 'axios'
@@ -19,77 +19,92 @@ import { type ProfileFormData, profileSchema } from '@/zod/validation-schema'
 import { Logger } from '@/lib/logger'
 import { getData } from '@/lib/utils'
 import Loading from '@/app/[locale]/loading'
+import { useTranslations } from "next-intl";
 
 interface FormFieldProps {
-  label: string
-  id: string
-  children: React.ReactNode
+  label: string;
+  id: string;
+  children: React.ReactNode;
 }
 
 const FormField: React.FC<FormFieldProps> = ({ label, id, children }) => (
-  <div className='space-y-2'>
+  <div className="space-y-2">
     <Label htmlFor={id}>{label}</Label>
     {children}
   </div>
-)
+);
 
 export default function ProfileClient() {
-  const { user, error, isLoading } = useUser()
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
-
+  const { user, error, isLoading } = useUser();
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const t = useTranslations("");
   const methods = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema)
-  })
+    resolver: zodResolver(profileSchema),
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
-  } = methods
+    reset,
+  } = methods;
 
-  const onSubmit = (data: ProfileFormData) => {
-    Logger.info(data)
-    toast({
-      title: 'Profile updated',
-      description: 'Your changes have been saved.'
-    })
-  }
+  const onSubmit = async (data: ProfileFormData) => {
+    try {
+      const response = await axios.put(
+        `${baseUrl}/api/user/me?user_id=${user?.sub}`,
+        data
+      );
+      Logger.info(data);
+      toast({
+        title: t("Profile_updated"),
+        description: t("Your_changes_have_been_saved"),
+      });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast({
+        title: t("Error"),
+        description: t("An_error_occurred_while_updating_your_profile"),
+      });
+    }
+  };
 
   useEffect(() => {
     async function fetchProfile() {
       try {
         // Assuming getData returns an object with an accessToken.
-        const tokenData = await getData()
+        const tokenData = await getData();
         const response = await axios.get(
-          `${baseUrl}/api/v1/user/profile-user/me?token=${tokenData.accessToken}`,
+          `${baseUrl}/api/user/profile-user/me?user_id=${user?.sub}`,
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
-        )
+        );
+        console.log(response.data);
 
-        const profileData = response.data
+        const profileData = response.data;
         reset({
-          name: profileData.name ?? '',
-          bio: profileData.bio ?? '',
-          location: profileData.location ?? '',
+          name: profileData.name ?? "",
+          bio: profileData.bio ?? "",
+          username: profileData.username ?? "",
+          location: profileData.location ?? "",
           birthday: profileData.birthday
             ? new Date(profileData.birthday)
             : undefined,
-          gender: profileData.gender ?? '',
-          phone: profileData.phone_number ?? ''
-        })
+          gender: profileData.gender ?? "",
+          phone: profileData.phone_number ?? "",
+        });
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
 
     if (user) {
-      fetchProfile()
+      fetchProfile();
     }
-  }, [user])
+  }, [user]);
 
   if (isLoading) return <Loading />;
 
@@ -111,10 +126,10 @@ export default function ProfileClient() {
               </Avatar>
               <input type="file" style={{ display: "none" }} accept="image/*" />
             </div>
-            <FormField label="Name" id="name">
+            <FormField label={t("Name")} id="name">
               <Input
                 id="name"
-                placeholder={user.name ?? "No name"}
+                placeholder={t("Enter_your_name")}
                 {...register("name")}
               />
               {errors.name && (
@@ -123,16 +138,25 @@ export default function ProfileClient() {
                 </p>
               )}
             </FormField>
-            <FormField label="Username" id="username">
+
+            <FormField label={t("Username")} id="username">
               <Input
                 id="username"
-                placeholder={user.nickname ?? "No nickname"}
+                placeholder={t("Enter_your_username")}
+                disabled
+                {...register("username")}
               />
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.username.message}
+                </p>
+              )}
             </FormField>
-            <FormField label="Bio" id="bio">
+
+            <FormField label={t("Bio")} id="bio">
               <Textarea
                 id="bio"
-                placeholder="Enter your bio"
+                placeholder={t("Enter_your_bio")}
                 className="min-h-[100px]"
                 {...register("bio")}
               />
@@ -142,10 +166,11 @@ export default function ProfileClient() {
                 </p>
               )}
             </FormField>
-            <FormField label="Location" id="location">
+
+            <FormField label={t("Location")} id="location">
               <Input
                 id="location"
-                placeholder="San Francisco, CA"
+                placeholder={t("Enter_your_location")}
                 {...register("location")}
               />
               {errors.location && (
@@ -154,7 +179,8 @@ export default function ProfileClient() {
                 </p>
               )}
             </FormField>
-            <FormField label="Birthday" id="birthday">
+
+            <FormField label={t("Birthday")} id="birthday">
               <DatePicker name="birthday" />
               {errors.birthday && (
                 <p className="mt-1 text-sm text-red-500">
@@ -162,10 +188,11 @@ export default function ProfileClient() {
                 </p>
               )}
             </FormField>
-            <FormField label="Phone" id="phone">
+
+            <FormField label={t("Phone")} id="phone">
               <Input
                 id="phone"
-                placeholder="(123) 456-7890"
+                placeholder={t("Enter_your_phone_number")}
                 type="tel"
                 {...register("phone")}
               />
@@ -175,7 +202,8 @@ export default function ProfileClient() {
                 </p>
               )}
             </FormField>
-            <FormField label="Gender" id="gender">
+
+            <FormField label={t("Gender")} id="gender">
               <GenderRadioGroup name="gender" />
               {errors.gender && (
                 <p className="mt-1 text-sm text-red-500">
@@ -185,7 +213,7 @@ export default function ProfileClient() {
             </FormField>
             <div className="flex justify-end">
               <Button type="submit" size="lg">
-                Save Changes
+                {t("Save_Changes")}
               </Button>
             </div>
           </div>
