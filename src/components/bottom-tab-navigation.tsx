@@ -49,6 +49,12 @@ export default function BottomTabNavigation({
           className="h-7 w-7"
         />
       </Link>
+      <Link href={getLocalizedPath('/settings')} className="flex flex-col items-center justify-center">
+        <UserIcon
+          color={isActive("/settings") ? "#000000" : "#A9A9A9"}
+          className="h-7 w-7"
+        />
+      </Link>
     </nav>
   );
 }

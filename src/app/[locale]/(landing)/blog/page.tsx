@@ -7,8 +7,6 @@ import { useTranslations } from "next-intl";
 
 export default function BlogPage() {
     const t = useTranslations("BlogPage");
-
-    // Placeholder for blog posts data, which will eventually come from Prismic or another CMS
     const blogPosts = [
         {
             id: 1,
@@ -16,7 +14,7 @@ export default function BlogPage() {
             excerpt: t("post1.excerpt"),
             imageUrl: "/placeholder.svg",
             altText: t("post1.image_alt"),
-            link: "#"
+            link: `/blog/1`
         },
         {
             id: 2,
@@ -24,9 +22,16 @@ export default function BlogPage() {
             excerpt: t("post2.excerpt"),
             imageUrl: "/placeholder.svg",
             altText: t("post2.image_alt"),
-            link: "#"
-        }
-        // Add more placeholder posts here as needed
+            link: `/blog/2`
+        },
+        {
+            id: 3,
+            title: t("post3.title"),
+            excerpt: t("post3.excerpt"),
+            imageUrl: "/placeholder.svg",
+            altText: t("post3.image_alt"),
+            link: `/blog/3`
+        },
     ];
 
     return (
@@ -34,6 +39,9 @@ export default function BlogPage() {
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                 {t("title")}
             </h1>
+            <p className="mt-4 text-muted-foreground">
+                {t("subtitle")}
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {blogPosts.map((post) => (
                     <Card key={post.id} className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">

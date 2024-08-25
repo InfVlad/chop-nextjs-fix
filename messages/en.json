@@ -135,6 +135,7 @@
   },
   "BlogPage": {
     "title": "Blog",
+    "subtitle": "Read our latest blog posts.",
     "post1": {
       "title": "Unlocking the Secrets of Successful Startups",
       "excerpt": "Discover the key strategies and insights that have propelled the most innovative startups to success. From funding to scaling, this blog post covers it all.",
@@ -173,7 +174,7 @@
     "toggleMenu": "Toggle Menu"
   },
   "LandingFooter": {
-    "companyName": "Chop Inc",
+    "companyName": "Chop Inc.",
     "allRightsReserved": "All rights reserved."
   },
   "ContactPage": {
