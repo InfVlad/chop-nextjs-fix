@@ -23,6 +23,9 @@
   "Billing": "Billing",
   "Settings": "Settings",
   "My_account": "My account",
+  "trendingTitle": "Trending 🔥",
+  "previousButton": "Previous",
+  "nextButton": "Next",
   "Hey_what_do_you_want_to_learn_today?": "Hey, what do you want to learn today?",
   "Select_one_of_the_topics_from_below_and_start_playing": "Select one of the topics from below and start playing.",
   "Hint": "Hint",
@@ -115,6 +118,8 @@
   "PricingPage": {
     "title": "Pricing",
     "subtitle": "Choose the plan that's right for you.",
+    "comingSoon": "Coming soon!",
+    "chopIsFree": "Chop is free forever. After each study session, you'll see ads. To remove ads, you can subscribe.",
     "individual": {
       "title": "Individual",
       "description": "Ideal for solo users. Are you a student?",
@@ -207,5 +212,12 @@
     "home": "Home",
     "search": "Search",
     "profile": "Profile"
+  },
+  "SearchPage": {
+    "fetchError": "Error fetching search results:",
+    "searchPlaceholder": "Search anything...",
+    "recentTitle": "Recent",
+    "clearAllButton": "Clear All",
+    "noRecentSearches": "No recent searches."
   }
 }

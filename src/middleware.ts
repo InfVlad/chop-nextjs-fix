@@ -60,8 +60,8 @@ export const config = {
     "/following",
     "/settings",
     "/about",
-    "/pricing",
-    "/blog",
+    "/pricing/:path*",
+    "/blog/:path*",
     "/contact",
   ],
 };

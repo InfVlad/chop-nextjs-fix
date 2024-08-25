@@ -40,12 +40,13 @@ export default function CategoryButtons({
 
   return (
     <div className="overflow-hidden max-w-md w-full">
-      <h2 className="text-md font-bold mb-2">Trending 🔥</h2>
+      <h2 className="text-md font-bold mb-2">{t("trendingTitle")}</h2>
       <div className="flex items-center gap-4">
         <button
           onClick={handlePrevious}
           className="text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer rounded-full"
           disabled={startIndex === 0}
+          aria-label={t("previousButton")}
         >
           <ChevronLeftIcon />
         </button>
@@ -66,6 +67,7 @@ export default function CategoryButtons({
           onClick={handleNext}
           className="text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer rounded-full"
           disabled={startIndex >= categories.length - 3}
+          aria-label={t("nextButton")}
         >
           <ChevronRightIcon />
         </button>
@@ -87,11 +89,10 @@ function CustomButton({
 }: CustomButtonProps) {
   return (
     <button
-      className={`h-6 w-28 text-xs font-medium rounded-md transition-colors bg-background border border-input text-foreground ${
-        isSelected
+      className={`h-6 w-28 text-xs font-medium rounded-md transition-colors bg-background border border-input text-foreground ${isSelected
           ? "bg-accent text-accent-foreground"
           : "hover:bg-accent hover:text-accent-foreground"
-      }`}
+        }`}
       onClick={onClick}
     >
       {children}

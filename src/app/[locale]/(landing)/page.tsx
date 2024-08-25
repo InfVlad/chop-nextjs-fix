@@ -29,12 +29,12 @@ export default function LandingPage() {
       <h1 className="text-5xl font-bold">
         {t("learn")} <TypingEffect texts={topics} className="inline-block" />
       </h1>
-      <p className="text-2xl text-muted-foreground">
+      <p className="text-2xl text-muted-foreground flex-wrap">
         {t("description")}
       </p>
       <Button
         variant="default"
-        className="hidden md:flex h-9 px-4 text-sm font-medium"
+        className="md:flex h-9 px-4 text-sm font-medium"
         onClick={() => router.push("/api/auth/login")}
       >
         {t("getStarted")}

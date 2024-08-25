@@ -7,11 +7,14 @@ import { BadgeCheck, LoaderCircle, X } from "lucide-react";
 import Link from "next/link";
 import { useSchemaStore } from "@/providers/schema-store-provider";
 import axios from "axios";
-import CategoryButtons from "@/components/category-buttons";  // Import the CategoryButtons component
+import CategoryButtons from "@/components/category-buttons";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations } from "next-intl";
 
 export default function SearchPage() {
+  const t = useTranslations("SearchPage");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -29,7 +32,6 @@ export default function SearchPage() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Autofocus on the input element when the component is rendered
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -53,7 +55,7 @@ export default function SearchPage() {
 
           return () => clearTimeout(timeoutId);
         } catch (error) {
-          console.error("Error fetching search results:", error);
+          console.error(t("fetchError"), error);
           setIsLoading(false);
         }
       } else {
@@ -62,7 +64,7 @@ export default function SearchPage() {
     };
 
     fetchSearchResults();
-  }, [searchQuery]);
+  }, [searchQuery, t]);
 
   const handleSearchResultClick = (result: any) => {
     addRecentSearch(result);
@@ -77,14 +79,13 @@ export default function SearchPage() {
       <div className="mb-4">
         <Input
           type="text"
-          placeholder="Search anything..."
+          placeholder={t("searchPlaceholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           ref={inputRef}
         />
       </div>
 
-      {/* Conditionally render CategoryButtons only when searchQuery is empty and not loading */}
       {!searchQuery && !isLoading && (
         <CategoryButtons
           selectedCategory={selectedCategory}
@@ -95,13 +96,17 @@ export default function SearchPage() {
       {searchQuery === "" && (
         <div>
           <div className="flex flex-row justify-between items-center">
-            <h2 className="font-bold">Recent</h2>
-            <Button variant="link" onClick={() => setRecentSearches([])} className="text-blue-500 hover:text-blue-700">
-              Clear All
+            <h2 className="font-bold">{t("recentTitle")}</h2>
+            <Button
+              variant="link"
+              onClick={() => setRecentSearches([])}
+              className="text-blue-500 hover:text-blue-700"
+            >
+              {t("clearAllButton")}
             </Button>
           </div>
           <ul>
-            {recentSearches.length > 0 &&
+            {recentSearches.length > 0 ? (
               recentSearches.map((search) => (
                 <li
                   key={search.id}
@@ -131,8 +136,10 @@ export default function SearchPage() {
                     onClick={() => handleDeleteRecentSearch(search.id)}
                   />
                 </li>
-              ))}
-            {recentSearches.length === 0 && <p>No recent searches.</p>}
+              ))
+            ) : (
+              <p>{t("noRecentSearches")}</p>
+            )}
           </ul>
         </div>
       )}
@@ -152,8 +159,11 @@ export default function SearchPage() {
               >
                 <Link href={`/search/${result.username}`}>
                   <div className="flex items-center">
-                    <Avatar className='h-20 w-20'>
-                      <AvatarImage src={result.profile_picture} alt={result.username} />
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage
+                        src={result.profile_picture}
+                        alt={result.username}
+                      />
                       <AvatarFallback>AP</AvatarFallback>
                     </Avatar>
                     <div>

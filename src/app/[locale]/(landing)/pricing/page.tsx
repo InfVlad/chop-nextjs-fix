@@ -10,23 +10,25 @@ export default function PricingPage() {
     <main className="flex-1 flex flex-col items-center justify-center gap-4 p-6">
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+
+          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mt-4">
             {t("title")}
           </h1>
-          <p className="text-muted-foreground mt-4">
-            {t("subtitle")}
+          <Badge variant="default" className="mt-4">
+            {t("comingSoon")}
+          </Badge>
+          <p className="text-muted-foreground mt-4">{t("subtitle")}</p>
+          <p className="mt-4">
+            {t("chopIsFree")}
           </p>
-          <Badge className="mt-4" variant="secondary">Coming soon!</Badge>
+
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <div className="rounded-lg border border-input bg-background p-6 shadow-sm">
             <h3 className="text-2xl font-bold">{t("individual.title")}</h3>
             <p className="mt-4 text-muted-foreground">
               {t("individual.description")}{" "}
-              <Link
-                href="/student-discount"
-                className="text-primary underline"
-              >
+              <Link href="/pricing/students" className="text-primary underline">
                 {t("individual.discount")}
               </Link>
             </p>
@@ -61,8 +63,7 @@ export default function PricingPage() {
             </div>
           </div>
         </div>
-
       </div>
-    </main>
+    </main >
   );
 }

@@ -9,6 +9,7 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { useTranslations } from 'next-intl';
 import Logo from './logo';
 import { ThemeToggle } from './theme-toggle';
+import LanguageCombobox from './language-combobox';
 
 export default function LandingHeader() {
     const router = useRouter();
@@ -68,6 +69,7 @@ export default function LandingHeader() {
                         </SheetTrigger>
                         <SheetContent side="left" className="md:max-w-xs">
                             <nav className="grid gap-6 text-lg font-medium">
+                                <LanguageCombobox />
                                 <Link href="/about" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
                                     {t("about")}
                                 </Link>
