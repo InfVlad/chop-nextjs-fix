@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import AsideMenu from "@/components/aside-menu";
-import OverlayAside from "@/components/aside-overlay";
 import BottomTabNavigation from "@/components/bottom-tab-navigation";
 
 export default function DashboardLayout({
@@ -34,7 +33,6 @@ export default function DashboardLayout({
           <BottomTabNavigation onOpenOverlay={handleOpenOverlay} />
         </div>
       </div>
-      <OverlayAside activeTab={activeTab} onClose={handleCloseOverlay} onOpen={() => setIsOverlayOpen(true)} />
     </section>
   );
 }
