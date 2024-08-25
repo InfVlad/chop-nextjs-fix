@@ -28,7 +28,7 @@ const languages = [
     code: "en",
   },
   {
-    country: "Indi",
+    country: "हिन्दी",
     code: "ind",
   },
   {
@@ -36,7 +36,7 @@ const languages = [
     code: "es",
   },
   {
-    country: "Japan",
+    country: "日本語",
     code: "ja",
   },
 ];

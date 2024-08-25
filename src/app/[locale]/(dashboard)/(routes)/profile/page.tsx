@@ -15,8 +15,8 @@ export default function ProfilePage() {
   const getLocalizedPath = (path: string) => `/${locale}${path}`;
 
   return (
-    <div className="flex justify-center h-2/3 text-foreground p-6">
-      <div className="flex flex-col space-6 w-full max-w-md border-2 rounded-md">
+    <div className="flex justify-center h-2/3 text-foreground p-4">
+      <div className="flex flex-col space-6 w-full rounded-md">
         <div className='flex flex-row ml-4 items-center'>
           {/* Profile Picture */}
           <div className="">

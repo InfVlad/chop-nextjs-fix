@@ -1,21 +1,13 @@
+// components/SettingsScreen.tsx
 "use client";
 import { useSchemaStore } from "@/providers/schema-store-provider";
-import { Label } from "@/components/ui/label";
 import LanguageCombobox from "@/components/language-combobox";
-import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "next-intl";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import SettingSection from "./_components/setting-section";
+import SettingItem from "./_components/setting-item";
+import SettingSelect from "./_components/setting-select";
 
 export default function SettingsScreen() {
     const { user_input_generation } = useSchemaStore((state) => state);
@@ -24,395 +16,324 @@ export default function SettingsScreen() {
 
     return (
         <div className="flex justify-center h-fit bg-background text-foreground p-8">
-            <div className="flex flex-col space-y-6 w-full max-w-md">
+            <div className="flex flex-col space-y-6 w-full md:w-fit md:max-w-md justify-between">
                 <h1 className="text-2xl font-semibold">{t("Settings")}</h1>
 
                 {/* Language Setting */}
-                <div>
-                    <Label className="text-lg font-medium mb-2">{t("Language")}</Label>
-                    <LanguageCombobox />
-                </div>
+                <SettingSection title={t("Language")}>
+                    <SettingItem label={t("Language")}>
+                        <LanguageCombobox />
+                    </SettingItem>
+                </SettingSection>
 
                 {/* Dark Mode Setting */}
-                <div>
-                    <Label className="text-lg font-medium mb-2">{t("Dark_mode")}</Label>
-                    <ThemeToggle variant="switch" />
-                </div>
+                <SettingSection title={t("Dark_mode")}>
+                    <SettingItem label={t("Dark_mode")}>
+                        <ThemeToggle variant="switch" />
+                    </SettingItem>
+                </SettingSection>
 
                 {/* Account Settings */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Account Settings</h2>
-
-                    <div className="flex flex-col space-y-2">
-                        <Label className="text-sm font-medium">Username</Label>
-                        <input type="text" placeholder="Change your username" className="input" />
-
-                        <Label className="text-sm font-medium">Email</Label>
-                        <input type="email" placeholder="Change your email" className="input" />
-
-                        <Label className="text-sm font-medium">Password</Label>
-                        <Button variant="default" className="w-full">Change Password</Button>
-
-                        <Label className="text-sm font-medium">Phone Number</Label>
-                        <input type="text" placeholder="Add your phone number" className="input" />
-
-                        <Label className="text-sm font-medium">Two-Factor Authentication</Label>
-                        <Switch id="two-factor-authentication" />
-
-                        <Label className="text-sm font-medium">Connected Accounts</Label>
-                        <Button variant="outline" className="w-full">Manage Connected Accounts</Button>
-                    </div>
-                </div>
+                <SettingSection title="Account Settings">
+                    <SettingItem
+                        label="Password"
+                        type="label-button"
+                        buttonText="Change Password"
+                        onClick={() => console.log('Change Password')}
+                    />
+                    <SettingItem
+                        label="Two-Factor Authentication"
+                        type="switch"
+                        switchId="two-factor-authentication"
+                    />
+                </SettingSection>
 
                 {/* Privacy Settings */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Privacy Settings</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Profile Visibility</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select visibility" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Visibility</SelectLabel>
-                                    <SelectItem value="public">Public</SelectItem>
-                                    <SelectItem value="private">Private</SelectItem>
-                                    <SelectItem value="friends-only">Friends Only</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Activity Status</Label>
-                        <Switch id="activity-status" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Blocked Users</Label>
-                        <Button variant="outline" className="w-full">Manage Blocked Users</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Search Privacy</Label>
-                        <Switch id="search-privacy" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Data Download</Label>
-                        <Button variant="outline" className="w-full">Request Data Download</Button>
-                    </div>
-                </div>
+                <SettingSection title="Privacy Settings">
+                    <SettingSelect
+                        label="Profile Visibility"
+                        placeholder="Select visibility"
+                        selectOptions={[
+                            { value: "public", label: "Public" },
+                            { value: "private", label: "Private" },
+                            { value: "friends-only", label: "Friends Only" }
+                        ]}
+                    />
+                    <SettingItem
+                        label="Activity Status"
+                        type="switch"
+                        switchId="activity-status"
+                    />
+                    <SettingItem
+                        label="Blocked Users"
+                        type="label-button"
+                        buttonText="Manage Blocked Users"
+                        onClick={() => console.log('Manage Blocked Users')}
+                    />
+                    <SettingItem
+                        label="Search Privacy"
+                        type="switch"
+                        switchId="search-privacy"
+                    />
+                    <SettingItem
+                        label="Data Download"
+                        type="label-button"
+                        buttonText="Request Data Download"
+                        onClick={() => console.log('Request Data Download')}
+                    />
+                </SettingSection>
 
                 {/* Security Settings */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Security Settings</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Login Alerts</Label>
-                        <Switch id="login-alerts" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">App Passwords</Label>
-                        <Button variant="outline" className="w-full">Manage App Passwords</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Session Management</Label>
-                        <Button variant="outline" className="w-full">Manage Sessions</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Security Questions</Label>
-                        <Button variant="outline" className="w-full">Manage Security Questions</Button>
-                    </div>
-                </div>
+                <SettingSection title="Security Settings">
+                    <SettingItem
+                        label="Login Alerts"
+                        type="switch"
+                        switchId="login-alerts"
+                    />
+                    <SettingItem
+                        label="Session Management"
+                        type="label-button"
+                        buttonText="Manage Sessions"
+                        onClick={() => console.log('Manage Sessions')}
+                    />
+                    <SettingItem
+                        label="Security Questions"
+                        type="label-button"
+                        buttonText="Manage Security Questions"
+                        onClick={() => console.log('Manage Security Questions')}
+                    />
+                </SettingSection>
 
                 {/* Notification Settings */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Notification Settings</h2>
-
-                    {/* Email Notifications */}
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">{t("Email Notifications")}</Label>
-                        <Switch id="email-notifications" />
-                    </div>
-
-                    {/* Push Notifications */}
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">{t("Push Notifications")}</Label>
-                        <Switch id="push-notifications" />
-                    </div>
-
-                    {/* In-app Notifications */}
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">{t("In-app Notifications")}</Label>
-                        <Switch id="in-app-notifications" />
-                    </div>
-
-                    {/* Sound for Notifications */}
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">{t("Notification Sound")}</Label>
-                        <Switch id="notification-sound" />
-                    </div>
-
-                    {/* Do Not Disturb */}
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">{t("Do Not Disturb")}</Label>
-                        <Switch id="do-not-disturb" />
-                    </div>
-
-                    {/* Notification Frequency */}
-                    <div className="flex flex-col mt-4">
-                        <Label className="text-sm font-medium mb-2">{t("Notification Frequency")}</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select frequency" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Frequency</SelectLabel>
-                                    <SelectItem value="low">Low</SelectItem>
-                                    <SelectItem value="normal">Normal</SelectItem>
-                                    <SelectItem value="high">High</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
+                <SettingSection title="Notification Settings">
+                    <SettingItem
+                        label={t("Email Notifications")}
+                        type="switch"
+                        switchId="email-notifications"
+                    />
+                    <SettingItem
+                        label={t("Push Notifications")}
+                        type="switch"
+                        switchId="push-notifications"
+                    />
+                    <SettingItem
+                        label={t("In-app Notifications")}
+                        type="switch"
+                        switchId="in-app-notifications"
+                    />
+                    <SettingItem
+                        label={t("Notification Sound")}
+                        type="switch"
+                        switchId="notification-sound"
+                    />
+                    <SettingItem
+                        label={t("Do Not Disturb")}
+                        type="switch"
+                        switchId="do-not-disturb"
+                    />
+                    <SettingSelect
+                        label={t("Notification Frequency")}
+                        placeholder="Select frequency"
+                        selectOptions={[
+                            { value: "low", label: "Low" },
+                            { value: "normal", label: "Normal" },
+                            { value: "high", label: "High" }
+                        ]}
+                    />
+                </SettingSection>
 
                 {/* Content Preferences */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Content Preferences</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Content Language</Label>
-                        <LanguageCombobox />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Content Filtering</Label>
-                        <Switch id="content-filtering" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Ad Preferences</Label>
-                        <Button variant="outline" className="w-full">Manage Ad Preferences</Button>
-                    </div>
-                </div>
+                <SettingSection title="Content Preferences">
+                    <SettingItem
+                        label="Content Filtering"
+                        type="switch"
+                        switchId="content-filtering"
+                    />
+                    <SettingItem
+                        label="Ad Preferences"
+                        type="label-button"
+                        buttonText="Manage Ad Preferences"
+                        onClick={() => console.log('Manage Ad Preferences')}
+                    />
+                </SettingSection>
 
                 {/* Appearance Settings */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Appearance Settings</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Font Size</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select font size" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Font Size</SelectLabel>
-                                    <SelectItem value="small">Small</SelectItem>
-                                    <SelectItem value="medium">Medium</SelectItem>
-                                    <SelectItem value="large">Large</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Custom Background</Label>
-                        <Button variant="outline" className="w-full">Set Background</Button>
-                    </div>
-                </div>
+                <SettingSection title="Appearance Settings">
+                    <SettingSelect
+                        label="Font Size"
+                        placeholder="Select font size"
+                        selectOptions={[
+                            { value: "small", label: "Small" },
+                            { value: "medium", label: "Medium" },
+                            { value: "large", label: "Large" }
+                        ]}
+                    />
+                    <SettingItem
+                        label="Custom Background"
+                        type="label-button"
+                        buttonText="Set Background"
+                        onClick={() => console.log('Set Background')}
+                    />
+                </SettingSection>
 
                 {/* Communication Preferences */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Communication Preferences</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Message Requests</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select who can message you" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Message Requests</SelectLabel>
-                                    <SelectItem value="everyone">Everyone</SelectItem>
-                                    <SelectItem value="friends">Friends</SelectItem>
-                                    <SelectItem value="no-one">No One</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Comments and Replies</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select who can comment" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Comments and Replies</SelectLabel>
-                                    <SelectItem value="everyone">Everyone</SelectItem>
-                                    <SelectItem value="followers">Followers</SelectItem>
-                                    <SelectItem value="friends">Friends</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Tagged Posts</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select who can tag you" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Tagged Posts</SelectLabel>
-                                    <SelectItem value="everyone">Everyone</SelectItem>
-                                    <SelectItem value="followers">Followers</SelectItem>
-                                    <SelectItem value="friends">Friends</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
+                <SettingSection title="Communication Preferences">
+                    <SettingSelect
+                        label="Message Requests"
+                        placeholder="Select who can message you"
+                        selectOptions={[
+                            { value: "everyone", label: "Everyone" },
+                            { value: "friends", label: "Friends" },
+                            { value: "no-one", label: "No One" }
+                        ]}
+                    />
+                    <SettingSelect
+                        label="Comments and Replies"
+                        placeholder="Select who can comment"
+                        selectOptions={[
+                            { value: "everyone", label: "Everyone" },
+                            { value: "followers", label: "Followers" },
+                            { value: "friends", label: "Friends" }
+                        ]}
+                    />
+                    <SettingSelect
+                        label="Tagged Posts"
+                        placeholder="Select who can tag you"
+                        selectOptions={[
+                            { value: "everyone", label: "Everyone" },
+                            { value: "followers", label: "Followers" },
+                            { value: "friends", label: "Friends" }
+                        ]}
+                    />
+                </SettingSection>
 
                 {/* Accessibility Settings */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Accessibility Settings</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Text-to-Speech</Label>
-                        <Switch id="text-to-speech" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Color Contrast</Label>
-                        <Switch id="color-contrast" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Subtitles and Captions</Label>
-                        <Switch id="subtitles-captions" />
-                    </div>
-                </div>
+                <SettingSection title="Accessibility Settings">
+                    <SettingItem
+                        label="Text-to-Speech"
+                        type="switch"
+                        switchId="text-to-speech"
+                    />
+                    <SettingItem
+                        label="Color Contrast"
+                        type="switch"
+                        switchId="color-contrast"
+                    />
+                    <SettingItem
+                        label="Subtitles and Captions"
+                        type="switch"
+                        switchId="subtitles-captions"
+                    />
+                </SettingSection>
 
                 {/* Data and Storage */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Data and Storage</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Storage Management</Label>
-                        <Button variant="outline" className="w-full">Manage Storage</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Download Quality</Label>
-                        <Select>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select quality" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Download Quality</SelectLabel>
-                                    <SelectItem value="low">Low</SelectItem>
-                                    <SelectItem value="medium">Medium</SelectItem>
-                                    <SelectItem value="high">High</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
+                <SettingSection title="Data and Storage">
+                    <SettingItem
+                        label="Storage Management"
+                        type="label-button"
+                        buttonText="Manage Storage"
+                        onClick={() => console.log('Manage Storage')}
+                    />
+                    <SettingSelect
+                        label="Download Quality"
+                        placeholder="Select quality"
+                        selectOptions={[
+                            { value: "low", label: "Low" },
+                            { value: "medium", label: "Medium" },
+                            { value: "high", label: "High" }
+                        ]}
+                    />
+                </SettingSection>
 
                 {/* Legal and Compliance */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Legal and Compliance</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Terms of Service</Label>
-                        <Button variant="outline" className="w-full">View Terms</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Privacy Policy</Label>
-                        <Button variant="outline" className="w-full">View Privacy Policy</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Cookie Preferences</Label>
-                        <Button variant="outline" className="w-full">Manage Cookies</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Report a Problem</Label>
-                        <Button variant="outline" className="w-full">Report Issue</Button>
-                    </div>
-                </div>
+                <SettingSection title="Legal and Compliance">
+                    <SettingItem
+                        label="Terms of Service"
+                        type="label-button"
+                        buttonText="View Terms"
+                        onClick={() => console.log('View Terms')}
+                    />
+                    <SettingItem
+                        label="Privacy Policy"
+                        type="label-button"
+                        buttonText="View Privacy Policy"
+                        onClick={() => console.log('View Privacy Policy')}
+                    />
+                    <SettingItem
+                        label="Cookie Preferences"
+                        type="label-button"
+                        buttonText="Manage Cookies"
+                        onClick={() => console.log('Manage Cookies')}
+                    />
+                    <SettingItem
+                        label="Report a Problem"
+                        type="label-button"
+                        buttonText="Report Issue"
+                        onClick={() => console.log('Report Issue')}
+                    />
+                </SettingSection>
 
                 {/* Support and Feedback */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Support and Feedback</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Help Center</Label>
-                        <Button variant="outline" className="w-full">Visit Help Center</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Contact Support</Label>
-                        <Button variant="outline" className="w-full">Contact Us</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Bug Report</Label>
-                        <Button variant="outline" className="w-full">Report a Bug</Button>
-                    </div>
-                </div>
+                <SettingSection title="Support and Feedback">
+                    <SettingItem
+                        label="Help Center"
+                        type="label-button"
+                        buttonText="Visit Help Center"
+                        onClick={() => console.log('Visit Help Center')}
+                    />
+                    <SettingItem
+                        label="Contact Support"
+                        type="label-button"
+                        buttonText="Contact Us"
+                        onClick={() => console.log('Contact Us')}
+                    />
+                    <SettingItem
+                        label="Bug Report"
+                        type="label-button"
+                        buttonText="Report a Bug"
+                        onClick={() => console.log('Report a Bug')}
+                    />
+                </SettingSection>
 
                 {/* Experimental Features (Beta Settings) */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Experimental Features</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Opt-in to Beta Features</Label>
-                        <Switch id="beta-features" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Feedback for New Features</Label>
-                        <Button variant="outline" className="w-full">Give Feedback</Button>
-                    </div>
-                </div>
+                <SettingSection title="Experimental Features">
+                    <SettingItem
+                        label="Opt-in to Beta Features"
+                        type="switch"
+                        switchId="beta-features"
+                    />
+                    <SettingItem
+                        label="Feedback for New Features"
+                        type="label-button"
+                        buttonText="Give Feedback"
+                        onClick={() => console.log('Give Feedback')}
+                    />
+                </SettingSection>
 
                 {/* Activity Log */}
-                <div>
-                    <h2 className="text-xl font-medium mb-2">Activity Log</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Account Activity</Label>
-                        <Button variant="outline" className="w-full">View Activity</Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Content Interaction</Label>
-                        <Button variant="outline" className="w-full">View Interactions</Button>
-                    </div>
-                </div>
+                <SettingSection title="Activity Log">
+                    <SettingItem
+                        label="Account Activity"
+                        type="label-button"
+                        buttonText="View Activity"
+                        onClick={() => console.log('View Activity')}
+                    />
+                    <SettingItem
+                        label="Content Interaction"
+                        type="label-button"
+                        buttonText="View Interactions"
+                        onClick={() => console.log('View Interactions')}
+                    />
+                </SettingSection>
 
                 {/* Log Out Button */}
-                <div>
-                    <Button onClick={() => router.push("/api/auth/logout")}>{t("Log_out")}</Button>
-                </div>
+                <SettingItem
+                    label={t("Log Out")}
+                    type="label-button"
+                    buttonText={t("Log_out")}
+                    buttonVariant="destructive"
+                    onClick={() => router.push("/api/auth/logout")}
+                />
             </div>
         </div>
     );

@@ -25,7 +25,6 @@ export function ThemeToggle({ variant = "toggle" }) {
         return (
             <div className="flex items-center">
                 <Switch id="dark-mode" checked={isDarkMode} onCheckedChange={handleToggle} />
-                <Label htmlFor="dark-mode">Dark Mode</Label>
             </div>
         )
     }
