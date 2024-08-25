@@ -13,7 +13,7 @@ export default function LandingHeader() {
     const t = useTranslations("LandingHeader");
 
     return (
-        <header className="flex items-center justify-between px-4 py-2 lg:px-8 h-16 border-b border-gray-200">
+        <header className="flex items-center justify-between px-4 py-2 lg:px-8 h-16 border-b border-secondary">
             {/* Chop Inc. logo or title */}
             <Link href="/" className="flex items-center" prefetch={false}>
                 <span className="ml-2 text-lg font-semibold">{t("companyName")}</span>
