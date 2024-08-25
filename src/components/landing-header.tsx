@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { useTranslations } from 'next-intl';
 import Logo from './logo';
+import { ThemeToggle } from './theme-toggle';
 
 export default function LandingHeader() {
     const router = useRouter();
@@ -36,8 +37,9 @@ export default function LandingHeader() {
                 </Link>
             </nav>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
                 {/* Log In button for large screens */}
+                <ThemeToggle variant='toggle' />
                 <Button
                     variant="default"
                     className="hidden md:flex h-9 px-4 text-sm font-medium"
@@ -51,7 +53,7 @@ export default function LandingHeader() {
                 <div className="flex md:hidden items-center gap-2">
                     <Button
                         variant="default"
-                        className="h-10 px-4 text-sm font-medium"
+                        className="h-9 px-4 text-sm font-medium"
                         onClick={() => router.push("/api/auth/login")}
                     >
                         <LogIn className="h-5 w-4 mr-2" />

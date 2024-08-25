@@ -4,17 +4,17 @@ import { Label } from "@/components/ui/label";
 import LanguageCombobox from "@/components/language-combobox";
 import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "next-intl";
-import { ModeToggle } from "@/components/mode-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
 
 export default function SettingsScreen() {
@@ -36,7 +36,7 @@ export default function SettingsScreen() {
                 {/* Dark Mode Setting */}
                 <div>
                     <Label className="text-lg font-medium mb-2">{t("Dark_mode")}</Label>
-                    <ModeToggle />
+                    <ThemeToggle variant="switch" />
                 </div>
 
                 {/* Account Settings */}
@@ -58,7 +58,7 @@ export default function SettingsScreen() {
 
                         <Label className="text-sm font-medium">Two-Factor Authentication</Label>
                         <Switch id="two-factor-authentication" />
-                        
+
                         <Label className="text-sm font-medium">Connected Accounts</Label>
                         <Button variant="outline" className="w-full">Manage Connected Accounts</Button>
                     </div>
@@ -207,11 +207,6 @@ export default function SettingsScreen() {
                 {/* Appearance Settings */}
                 <div>
                     <h2 className="text-xl font-medium mb-2">Appearance Settings</h2>
-
-                    <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Theme</Label>
-                        <ModeToggle />
-                    </div>
 
                     <div className="flex items-center justify-between">
                         <Label className="text-sm font-medium">Font Size</Label>

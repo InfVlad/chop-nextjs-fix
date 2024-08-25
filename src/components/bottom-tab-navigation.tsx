@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BellIcon, HomeIcon, SearchIcon, UserIcon } from "lucide-react";
+import { BellIcon, HomeIcon, SearchIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePathname } from 'next/navigation';
 
@@ -50,7 +50,7 @@ export default function BottomTabNavigation({
         />
       </Link>
       <Link href={getLocalizedPath('/settings')} className="flex flex-col items-center justify-center">
-        <UserIcon
+        <SettingsIcon
           color={isActive("/settings") ? "#000000" : "#A9A9A9"}
           className="h-7 w-7"
         />
