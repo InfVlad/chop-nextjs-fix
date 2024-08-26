@@ -16,7 +16,7 @@ export default function SettingsScreen() {
 
     return (
         <div className="flex justify-center h-fit bg-background text-foreground p-8">
-            <div className="flex flex-col space-y-6 w-full md:w-fit md:max-w-md justify-between">
+            <div className="flex flex-col space-y-6 w-full md:w-full md:max-w-md justify-between">
                 <h1 className="text-2xl font-semibold">{t("Settings")}</h1>
 
                 {/* Language Setting */}

@@ -211,7 +211,9 @@
   "DashboardLayout": {
     "home": "Home",
     "search": "Search",
-    "profile": "Profile"
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings"
   },
   "SearchPage": {
     "fetchError": "Error fetching search results:",
