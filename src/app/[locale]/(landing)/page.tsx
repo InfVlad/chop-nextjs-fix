@@ -26,10 +26,10 @@ export default function LandingPage() {
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center gap-4">
-      <h1 className="text-5xl font-bold">
+      <h1 className="text-5xl font-bold flex-wrap">
         {t("learn")} <TypingEffect texts={topics} className="inline-block" />
       </h1>
-      <p className="text-2xl text-muted-foreground flex-wrap">
+      <p className="text-2xl text-muted-foreground ">
         {t("description")}
       </p>
       <Button
