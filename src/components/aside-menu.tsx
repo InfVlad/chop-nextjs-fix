@@ -10,15 +10,7 @@ import SearchScreen from "@/app/[locale]/(dashboard)/(routes)/search/page";
 import NavLink from "@/components/nav-link";
 import { cn } from "@/lib/utils";
 
-interface AsideMenuProps {
-  onOpenOverlay?: (tab: string) => void;
-  isOverlayOpen?: boolean;
-}
-
-export default function AsideMenu({
-  onOpenOverlay,
-  isOverlayOpen,
-}: AsideMenuProps) {
+export default function AsideMenu({ }) {
   // Load the initial collapsed state from localStorage or default to false
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== "undefined") {
