@@ -3,14 +3,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LoaderCircle, X } from "lucide-react";
+import { BadgeCheck, LoaderCircle, X } from "lucide-react";
 import Link from "next/link";
 import { useSchemaStore } from "@/providers/schema-store-provider";
 import axios from "axios";
-import CategoryButtons from "@/components/category-buttons";  // Import the CategoryButtons component
+import CategoryButtons from "@/components/category-buttons";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations } from "next-intl";
 
 export default function SearchPage() {
+  const t = useTranslations("SearchPage");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -28,7 +32,6 @@ export default function SearchPage() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Autofocus on the input element when the component is rendered
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -52,7 +55,7 @@ export default function SearchPage() {
 
           return () => clearTimeout(timeoutId);
         } catch (error) {
-          console.error("Error fetching search results:", error);
+          console.error(t("fetchError"), error);
           setIsLoading(false);
         }
       } else {
@@ -61,7 +64,7 @@ export default function SearchPage() {
     };
 
     fetchSearchResults();
-  }, [searchQuery]);
+  }, [searchQuery, t]);
 
   const handleSearchResultClick = (result: any) => {
     addRecentSearch(result);
@@ -73,16 +76,16 @@ export default function SearchPage() {
 
   return (
     <div className="flex flex-col gap-4 py-8">
-      <Input
-        type="text"
-        placeholder="Search anything..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="mb-4 bg-gray-100 dark:bg-black"
-        ref={inputRef}  // Attach the ref to the Input component
-      />
+      <div className="mb-4">
+        <Input
+          type="text"
+          placeholder={t("searchPlaceholder")}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          ref={inputRef}
+        />
+      </div>
 
-      {/* Conditionally render CategoryButtons only when searchQuery is empty and not loading */}
       {!searchQuery && !isLoading && (
         <CategoryButtons
           selectedCategory={selectedCategory}
@@ -93,13 +96,17 @@ export default function SearchPage() {
       {searchQuery === "" && (
         <div>
           <div className="flex flex-row justify-between items-center">
-            <h2 className="font-bold">Recent</h2>
-            <Button variant="link" onClick={() => setRecentSearches([])} className="text-blue-500 hover:text-blue-700">
-              Clear All
+            <h2 className="font-bold">{t("recentTitle")}</h2>
+            <Button
+              variant="link"
+              onClick={() => setRecentSearches([])}
+              className="text-blue-500 hover:text-blue-700"
+            >
+              {t("clearAllButton")}
             </Button>
           </div>
           <ul>
-            {recentSearches.length > 0 &&
+            {recentSearches.length > 0 ? (
               recentSearches.map((search) => (
                 <li
                   key={search.id}
@@ -118,20 +125,21 @@ export default function SearchPage() {
                         <p className="text-sm text-gray-500">
                           {search.name}{" "}
                           {search.verified && (
-                            <span className="text-blue-500">&#10004;</span>
+                            <BadgeCheck className="h-4 w-4" />
                           )}
                         </p>
                       </div>
                     </div>
                   </Link>
                   <X
-                    className="cursor-pointer text-gray-500 hover:text-gray-700"
+                    className="cursor-pointer text-secondary hover:text-gray-700 h-4 w-4"
                     onClick={() => handleDeleteRecentSearch(search.id)}
                   />
                 </li>
-              ))}
-
-            {recentSearches.length === 0 && <p>No recent searches</p>}
+              ))
+            ) : (
+              <p>{t("noRecentSearches")}</p>
+            )}
           </ul>
         </div>
       )}
@@ -151,15 +159,16 @@ export default function SearchPage() {
               >
                 <Link href={`/search/${result.username}`}>
                   <div className="flex items-center">
-                    <Image
-                      src={result.profile_picture}
-                      alt={result.username}
-                      height={100}
-                      width={100}
-                    />
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage
+                        src={result.profile_picture}
+                        alt={result.username}
+                      />
+                      <AvatarFallback>AP</AvatarFallback>
+                    </Avatar>
                     <div>
                       <p className="font-semibold">{result.username}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-secondary">
                         {result.name} • {result.followers}
                       </p>
                     </div>

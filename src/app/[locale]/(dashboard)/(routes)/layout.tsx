@@ -1,40 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AsideMenu from "@/components/aside-menu";
-import OverlayAside from "@/components/aside-overlay";
 import BottomTabNavigation from "@/components/bottom-tab-navigation";
+import NavLink from "@/components/nav-link"; // Import NavLink if it's used directly here
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const [activeTab, setActiveTab] = useState<string | null>(null);
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isAsideMenuVisible, setIsAsideMenuVisible] = useState<boolean>(true);
 
-  const handleOpenOverlay = (tab: string) => {
-    setActiveTab(tab);
-    setIsOverlayOpen(true);
-  };
+  // Detect screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+        setIsAsideMenuVisible(false);
+      } else {
+        setIsMobile(false);
+        setIsAsideMenuVisible(true);
+      }
+    };
 
-  const handleCloseOverlay = () => {
-    setActiveTab(null);
-    setIsOverlayOpen(false);
-  };
+    // Initial check
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <section>
       <div className="flex min-h-screen w-full">
-        <AsideMenu onOpenOverlay={handleOpenOverlay} isOverlayOpen={isOverlayOpen} />
+        {!isMobile && <AsideMenu />}
         <div className="flex flex-1 flex-col relative">
-          <main className="flex-1 p-4 md:p-6">
-            {children}
+          <main className="flex-1 p-4 md:p-6">{children}
           </main>
-          <BottomTabNavigation onOpenOverlay={handleOpenOverlay} />
+          {isMobile && <BottomTabNavigation isBottomTab={true} />}
         </div>
       </div>
-      <OverlayAside activeTab={activeTab} onClose={handleCloseOverlay} onOpen={() => setIsOverlayOpen(true)} />
     </section>
   );
 }

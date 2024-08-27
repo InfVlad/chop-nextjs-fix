@@ -199,12 +199,14 @@
     "search": "Buscar",
     "notifications": "Notificaciones",
     "profile": "Perfil",
-    "settings": "Configuraciones",
+    "settings": "Configuración",
     "support": "Soporte"
   },
   "DashboardLayout": {
     "home": "Inicio",
     "search": "Buscar",
-    "profile": "Perfil"
+    "notifications": "Notificaciones",
+    "profile": "Perfil",
+    "settings": "Configuración"
   }
 }
