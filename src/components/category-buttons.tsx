@@ -90,8 +90,8 @@ function CustomButton({
   return (
     <button
       className={`h-6 w-28 text-xs font-medium rounded-md transition-colors bg-background border border-input text-foreground ${isSelected
-          ? "bg-accent text-accent-foreground"
-          : "hover:bg-accent hover:text-accent-foreground"
+        ? "bg-accent text-accent-foreground"
+        : "hover:bg-accent hover:text-accent-foreground"
         }`}
       onClick={onClick}
     >
