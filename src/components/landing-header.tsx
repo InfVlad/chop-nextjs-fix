@@ -69,7 +69,7 @@ export default function LandingHeader() {
                         </SheetTrigger>
                         <SheetContent side="left" className="md:max-w-xs">
                             <nav className="grid gap-6 text-lg font-medium">
-                                <LanguageCombobox />
+                                {/* <LanguageCombobox /> */}
                                 <Link href="/about" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
                                     {t("about")}
                                 </Link>

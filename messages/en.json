@@ -87,15 +87,15 @@
   "Enter_your_location": "Enter your location",
   "Enter_your_phone_number": "Enter your phone number",
   "AboutPage": {
-    "title": "About Us",
-    "description": "We are a small startup dedicated to building the first social learning platform: Chop.",
+    "title": "About",
+    "description": "We are building the first social learning platform: Chop.",
     "mission": {
       "title": "Mission",
-      "description": "Our mission is to fix the education system by building tools that allow people to become self-taught."
+      "description": "Our mission is to fix the education system. We will achieve this by building tools that allow everyone to teach themselves."
     },
     "vision": {
       "title": "Vision",
-      "description": "Our vision is to create a world where learning is accessible to everyone, anywhere."
+      "description": "Our vision is to be the go-to platform for learning anything."
     },
     "team": {
       "title": "Team",
@@ -119,7 +119,7 @@
     "title": "Pricing",
     "subtitle": "Choose the plan that's right for you.",
     "comingSoon": "Coming soon!",
-    "chopIsFree": "Chop is free forever. After each study session, you'll see ads. To remove ads, you can subscribe.",
+    "chopIsFree": "Chop is free forever. After each study session, you'll see ads. To remove them, you can subscribe.",
     "individual": {
       "title": "Individual",
       "description": "Ideal for solo users. Are you a student?",
@@ -141,6 +141,7 @@
   "BlogPage": {
     "title": "Blog",
     "subtitle": "Read our latest blog posts.",
+    "comingSoon": "Coming soon!",
     "post1": {
       "title": "Unlocking the Secrets of Successful Startups",
       "excerpt": "Discover the key strategies and insights that have propelled the most innovative startups to success. From funding to scaling, this blog post covers it all.",
