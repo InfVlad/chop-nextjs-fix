@@ -7,7 +7,7 @@ import { BadgeCheck, LoaderCircle, X } from "lucide-react";
 import Link from "next/link";
 import { useSchemaStore } from "@/providers/schema-store-provider";
 import axios from "axios";
-import CategoryButtons from "@/components/category-buttons";
+import TopicButtons from "@/components/topic-buttons"; // Updated import
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslations } from "next-intl";
@@ -18,7 +18,7 @@ export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("geography");
+  const [selectedTopic, setSelectedTopic] = useState("geography"); // Updated to 'selectedTopic'
 
   const {
     recentSearches,
@@ -87,9 +87,18 @@ export default function SearchPage() {
       </div>
 
       {!searchQuery && !isLoading && (
-        <CategoryButtons
-          selectedCategory={selectedCategory}
-          handleCategoryClick={setSelectedCategory}
+        <TopicButtons // Updated component usage
+          selectedTopic={selectedTopic}
+          handleTopicClick={setSelectedTopic}
+          topics={[
+            { id: "geography", label: "🌍 Geography" },
+            { id: "history", label: "📜 History" },
+            { id: "soccer", label: "⚽ Soccer" },
+            { id: "art-history", label: "🖼️ Art History" },
+            { id: "basketball", label: "🏀 Basketball" },
+            { id: "formula1", label: "🏎️ Formula 1" },
+            { id: "music", label: "🎵 Music" },
+          ]}
         />
       )}
 

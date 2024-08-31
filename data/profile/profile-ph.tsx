@@ -1,12 +1,18 @@
 import { UserProfile } from "./profile-t";
 
+// Function to generate a random number of likes
+function getRandomLikes() {
+    const maxLikes = 5000; // Change this to increase or decrease the range of likes
+    return Math.floor(Math.random() * maxLikes) + 1;
+}
+
 export const profilePh: UserProfile[] = [{
     "id": "1a2b3c4d5e6f7g8h9i0j",
     "name": "Alvaro Peña",
     "username": "alvropena",
     "birthday": "2001-05-26",
     "gender": "male",
-    "bio": "can't rush greatness.",
+    "bio": "can't rush greatness",
     "profile_picture": "https://example.com/profiles/alvaropena22.jpg",
     "location": "San Francisco, CA",
     "email": "me@alvropena.com",
@@ -28,8 +34,32 @@ export const profilePh: UserProfile[] = [{
         "Winner of 10 Challenges"
     ],
     "activities": [
-        { "action": "Completed a Geography quiz", "timestamp": "2024-08-30T14:00:00Z" },
-        { "action": "Searched for History resources", "timestamp": "2024-08-29T10:00:00Z" },
-        { "action": "Joined a Soccer discussion", "timestamp": "2024-08-28T18:00:00Z" }
+        {
+            "action": "Completed a Geography quiz",
+            "timestamp": "2024-08-30T14:00:00Z",
+            "name": "Alvaro Peña",
+            "username": "alvropena",
+            "profile_picture": "https://example.com/profiles/alvaropena22.jpg",
+            "verified": true,
+            "likes": getRandomLikes() // Random likes for this activity
+        },
+        {
+            "action": "Searched for History resources",
+            "timestamp": "2024-08-29T10:00:00Z",
+            "name": "Alvaro Peña",
+            "username": "alvropena",
+            "profile_picture": "https://example.com/profiles/alvaropena22.jpg",
+            "verified": true,
+            "likes": getRandomLikes() // Random likes for this activity
+        },
+        {
+            "action": "Joined a Soccer discussion",
+            "timestamp": "2024-08-28T18:00:00Z",
+            "name": "Alvaro Peña",
+            "username": "alvropena",
+            "profile_picture": "https://example.com/profiles/alvaropena22.jpg",
+            "verified": true,
+            "likes": getRandomLikes() // Random likes for this activity
+        }
     ]
 }];
