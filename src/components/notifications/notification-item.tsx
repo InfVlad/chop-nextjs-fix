@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Dot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NotificationAvatar } from "./notification-avatar";
-import { format, isToday, isYesterday } from "date-fns";
+import { isToday, isYesterday, format } from "date-fns";
 import { Notification } from "../../../data/notifications/notifications-t";
 
 interface NotificationItemProps {
@@ -26,20 +26,32 @@ export function NotificationItem({ notification, onMarkAsRead, onFollow, onAccep
         }
     };
 
+    const getFormattedDate = () => {
+        if (notification.formattedDate) {
+            return notification.formattedDate;
+        }
+
+        const notificationDate = new Date(notification.timestamp);
+
+        if (isToday(notificationDate)) {
+            return format(notificationDate, 'p');
+        } else if (isYesterday(notificationDate)) {
+            return format(notificationDate, 'p');
+        } else {
+            return format(notificationDate, 'MM/dd hh:mm a');
+        }
+    };
+
     return (
         <div
             key={notification.id}
-            className="relative flex flex-col p-2 'border-b"
+            className="relative flex flex-col p-2 border-b"
             style={{ height: '80px' }}
             onClick={() => onMarkAsRead(notification.id)}
         >
             <div className="flex justify-between items-center">
                 <small className="text-gray-500">
-                    {isToday(new Date(notification.timestamp))
-                        ? format(new Date(notification.timestamp), 'p')
-                        : isYesterday(new Date(notification.timestamp))
-                            ? format(new Date(notification.timestamp), 'p')
-                            : format(new Date(notification.timestamp), 'MM/dd hh:mm a')}
+                    {getFormattedDate()}
                 </small>
             </div>
 

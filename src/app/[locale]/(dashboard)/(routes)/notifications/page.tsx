@@ -20,15 +20,16 @@ function groupNotifications(notifications: Notification[]): Record<string, Notif
 
     notifications.forEach(notification => {
         const notificationDate = new Date(notification.timestamp);
+        const formattedDate = format(notificationDate, 'MM/dd - hh:mm a');
 
         if (isToday(notificationDate)) {
             grouped.Today.push(notification);
         } else if (isYesterday(notificationDate)) {
             grouped.Yesterday.push(notification);
         } else if (isSameMonth(notificationDate, subDays(new Date(), 30))) {
-            grouped["This Month"].push(notification);
+            grouped["This Month"].push({ ...notification, formattedDate });
         } else {
-            grouped.Older.push(notification);
+            grouped.Older.push({ ...notification, formattedDate });
         }
     });
 
