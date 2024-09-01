@@ -63,7 +63,7 @@ export default function ProfilePage() {
               Edit Profile
             </Button>
           </Link>
-          <Link href={getLocalizedPath('/profile/edit')} className="flex-1 mx-4">
+          <Link href={getLocalizedPath('/profile/analytics')} className="flex-1 mx-4">
             <Button className="py-2 w-full" variant="default">
               <LineChart className='mr-2 h-4 w-4' />
               View Analytics

@@ -3,31 +3,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { BadgeCheck, LoaderCircle, X } from "lucide-react";
-import Link from "next/link";
+import { BadgeCheck, SearchIcon, X } from "lucide-react";
 import { useSchemaStore } from "@/providers/schema-store-provider";
-import axios from "axios";
-import TopicButtons from "@/components/topic-buttons"; // Updated import
-import Image from "next/image";
+import TopicButtons from "@/components/topic-buttons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslations } from "next-intl";
+import { userProfiles, topics } from "../../../../../../data/search/userProfiles";
 
 export default function SearchPage() {
   const t = useTranslations("SearchPage");
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [selectedTopic, setSelectedTopic] = useState("geography"); // Updated to 'selectedTopic'
+  const [selectedTopic, setSelectedTopic] = useState("geography");
 
   const {
-    recentSearches,
+    recentSearches = [], // Default to an empty array
     setRecentSearches,
-    addRecentSearch,
-    deleteRecentSearch,
   } = useSchemaStore((state) => state);
-
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -37,46 +30,55 @@ export default function SearchPage() {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      if (searchQuery) {
-        setIsLoading(true);
+  const handleSearch = () => {
+    if (searchQuery) {
+      const filteredUserProfiles = userProfiles.filter(profile =>
+        profile.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        profile.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-        try {
-          const response = await axios.get(
-            `${baseUrl}/api/user/search?query=${searchQuery}`
-          );
-          const data = response.data;
+      const filteredTopics = topics.filter(topic =>
+        topic.label.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-          const timeoutId = setTimeout(() => {
-            setSearchResults(data);
-            setIsLoading(false);
-          }, 1500);
-
-          return () => clearTimeout(timeoutId);
-        } catch (error) {
-          console.error(t("fetchError"), error);
-          setIsLoading(false);
-        }
-      } else {
-        setSearchResults([]);
-      }
-    };
-
-    fetchSearchResults();
-  }, [searchQuery, t]);
-
-  const handleSearchResultClick = (result: any) => {
-    addRecentSearch(result);
+      setSearchResults([...filteredUserProfiles, ...filteredTopics]);
+    } else {
+      setSearchResults([]);
+    }
   };
 
-  const handleDeleteRecentSearch = (id: string) => {
-    deleteRecentSearch(id);
+  const handleSearchResultClick = (result: any) => {
+    if (result) {
+      setRecentSearches((prev = []) => {
+        const existingIndex = prev.findIndex(
+          (item) => item.id === result.id || item.label === result.label
+        );
+
+        let updatedRecentSearches;
+        if (existingIndex !== -1) {
+          // Move the existing item to the end of the list (most recent)
+          updatedRecentSearches = [...prev];
+          updatedRecentSearches.splice(existingIndex, 1);
+          updatedRecentSearches.push(result);
+        } else {
+          // Add new search result to the end of the list
+          updatedRecentSearches = [...prev, result];
+        }
+
+        return updatedRecentSearches.slice(-7); // Keep only the last 7 searches
+      });
+    }
+  };
+
+  const handleDeleteRecentSearch = (id: string | undefined) => {
+    setRecentSearches((prev = []) =>
+      prev.filter((search) => search.id !== id && search.label !== id)
+    );
   };
 
   return (
     <div className="flex flex-col gap-4 py-8">
-      <div className="mb-4">
+      <div className="flex gap-2 mb-4">
         <Input
           type="text"
           placeholder={t("searchPlaceholder")}
@@ -84,109 +86,116 @@ export default function SearchPage() {
           onChange={(e) => setSearchQuery(e.target.value)}
           ref={inputRef}
         />
+        <Button variant="default" onClick={handleSearch}>
+          <SearchIcon />
+        </Button>
       </div>
 
-      {!searchQuery && !isLoading && (
-        <TopicButtons // Updated component usage
+      {!searchQuery && (
+        <TopicButtons
           selectedTopic={selectedTopic}
           handleTopicClick={setSelectedTopic}
-          topics={[
-            { id: "geography", label: "🌍 Geography" },
-            { id: "history", label: "📜 History" },
-            { id: "soccer", label: "⚽ Soccer" },
-            { id: "art-history", label: "🖼️ Art History" },
-            { id: "basketball", label: "🏀 Basketball" },
-            { id: "formula1", label: "🏎️ Formula 1" },
-            { id: "music", label: "🎵 Music" },
-          ]}
+          topics={topics} // Use the placeholder topics
         />
       )}
 
-      {searchQuery === "" && (
-        <div>
-          <div className="flex flex-row justify-between items-center">
-            <h2 className="font-bold">{t("recentTitle")}</h2>
-            <Button
-              variant="link"
-              onClick={() => setRecentSearches([])}
-              className="text-blue-500 hover:text-blue-700"
-            >
-              {t("clearAllButton")}
-            </Button>
-          </div>
-          <ul>
-            {recentSearches.length > 0 ? (
-              recentSearches.map((search) => (
+      <div>
+        <div className="flex flex-row justify-between items-center">
+          <h2 className="font-bold">{t("recentTitle")}</h2>
+          <Button
+            variant="link"
+            onClick={() => setRecentSearches([])}
+            className="text-blue-500 hover:text-blue-700"
+          >
+            {t("clearAllButton")}
+          </Button>
+        </div>
+        <ul>
+          {Array.isArray(recentSearches) && recentSearches.length > 0 ? (
+            recentSearches.map((search) => (
+              search && (
                 <li
-                  key={search.id}
-                  className="flex items-center justify-between mb-2"
+                  key={search.id || search.label}
+                  className="flex items-center justify-between mb-2 hover:bg-secondary p-2 rounded-md cursor-pointer"
+                  onClick={() => handleSearchResultClick(search)}
                 >
-                  <Link href={`/search/${search.username}`}>
-                    <div className="flex items-center">
-                      <Image
-                        src={search.profile_picture}
-                        alt={search.username}
-                        height={100}
-                        width={100}
-                      />
-                      <div>
-                        <p className="font-semibold">{search.username}</p>
-                        <p className="text-sm text-gray-500">
-                          {search.name}{" "}
-                          {search.verified && (
-                            <BadgeCheck className="h-4 w-4" />
-                          )}
-                        </p>
-                      </div>
+                  <div className="flex items-center">
+                    {search.username ? (
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage
+                          src={search.profile_picture}
+                          alt={search.username}
+                        />
+                        <AvatarFallback>
+                          {search.name ? search.name.charAt(0).toUpperCase() : search.username.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    ) : (
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback>
+                          {search.label && search.label.split(' ')[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div className="ml-4">
+                      <p className="font-semibold flex items-center">
+                        {search.username || search.label}
+                        {search.verified && search.username && (
+                          <BadgeCheck className="h-4 w-4 ml-2 text-blue-500" />
+                        )}
+                      </p>
                     </div>
-                  </Link>
+                  </div>
                   <X
                     className="cursor-pointer text-secondary hover:text-gray-700 h-4 w-4"
-                    onClick={() => handleDeleteRecentSearch(search.id)}
+                    onClick={() => handleDeleteRecentSearch(search.id || search.label)}
                   />
                 </li>
-              ))
-            ) : (
-              <p>{t("noRecentSearches")}</p>
-            )}
-          </ul>
-        </div>
-      )}
+              )
+            ))
+          ) : (
+            <p>{t("noRecentSearches")}</p>
+          )}
+        </ul>
+      </div>
 
-      {isLoading && searchQuery !== "" ? (
-        <div className="flex justify-center items-center h-40">
-          <LoaderCircle className="h-10 w-10 animate-spin" />
-        </div>
-      ) : (
-        searchQuery !== "" && (
-          <ul>
-            {searchResults.map((result) => (
+      {searchResults.length > 0 && (
+        <ul>
+          {searchResults.map((result) => (
+            result && (
               <li
-                key={result.id}
-                className="flex items-center justify-between mb-2"
+                key={result.id || result.label}
+                className="flex items-center justify-between mb-2 hover:bg-secondary p-2 rounded-md cursor-pointer"
                 onClick={() => handleSearchResultClick(result)}
               >
-                <Link href={`/search/${result.username}`}>
-                  <div className="flex items-center">
-                    <Avatar className="h-20 w-20">
+                <div className="flex items-center">
+                  {result.username ? (
+                    <Avatar className="h-10 w-10">
                       <AvatarImage
                         src={result.profile_picture}
                         alt={result.username}
                       />
-                      <AvatarFallback>AP</AvatarFallback>
+                      <AvatarFallback>
+                        {result.name ? result.name.charAt(0).toUpperCase() : result.username.charAt(0).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
-                    <div>
-                      <p className="font-semibold">{result.username}</p>
-                      <p className="text-sm text-secondary">
-                        {result.name} • {result.followers}
-                      </p>
-                    </div>
+                  ) : (
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback>
+                        {result.label && result.label.split(' ')[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                  <div className="ml-4">
+                    <p className="font-semibold flex items-center">
+                      {result.username || result.label}
+                    </p>
                   </div>
-                </Link>
+                </div>
               </li>
-            ))}
-          </ul>
-        )
+            )
+          ))}
+        </ul>
       )}
     </div>
   );
