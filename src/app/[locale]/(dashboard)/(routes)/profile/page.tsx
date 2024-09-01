@@ -5,14 +5,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { format } from 'date-fns';
 import { profilePh } from '../../../../../../data/profile/profile-ph';
-import { BadgeCheck, Dot, LineChart, SettingsIcon } from "lucide-react";
+import { LineChart } from 'lucide-react';
+import { PersonIcon } from '@radix-ui/react-icons';
 import { Button } from "@/components/ui/button";
 import TopicButtons from '@/components/topic-buttons';
 import { ProfileHeader } from '@/components/profile/profile-header';
 import { ProfileStats } from '@/components/profile/profile-stats';
-import { ProfileInfo } from '@/components/profile/profile-info';
+// import { ProfileInfo } from '@/components/profile/profile-info';
 import { ProfileActivity } from '@/components/profile/profile-activity';
-import { PersonIcon } from '@radix-ui/react-icons';
 
 export default function ProfilePage() {
   const userProfile = profilePh[0];
@@ -56,15 +56,15 @@ export default function ProfilePage() {
           getLocalizedPath={getLocalizedPath}
         />
 
-        <div className='flex flex-row w-full'>
+        <div className='flex flex-row w-full mt-4'>
           <Link href={getLocalizedPath('/profile/edit')} className="flex-1 mx-4">
-            <Button className="py-2 w-full" variant="secondary">
+            <Button className="py-2 w-full" variant="default">
               <PersonIcon className='mr-2 h-4 w-4' />
               Edit Profile
             </Button>
           </Link>
           <Link href={getLocalizedPath('/profile/edit')} className="flex-1 mx-4">
-            <Button className="py-2 w-full" variant="secondary">
+            <Button className="py-2 w-full" variant="default">
               <LineChart className='mr-2 h-4 w-4' />
               View Analytics
             </Button>
@@ -72,22 +72,24 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Topics Component */}
-        <div className="mt-4">
-          <TopicButtons
-            selectedTopic={selectedTopic}
-            handleTopicClick={handleTopicClick}
-            topics={[
-              { id: "geography", label: "🌍 Geography" },
-              { id: "history", label: "📜 History" },
-              { id: "soccer", label: "⚽ Soccer" },
-              { id: "art-history", label: "🖼️ Art History" },
-              { id: "basketball", label: "🏀 Basketball" },
-              { id: "formula1", label: "🏎️ Formula 1" },
-              { id: "music", label: "🎵 Music" },
-            ]}
-            title="Recent"
-          />
-
+        <div className="mt-4 w-full">
+          <div>
+            <TopicButtons
+              selectedTopic={selectedTopic}
+              handleTopicClick={handleTopicClick}
+              topics={[
+                { id: "geography", label: "🌍 Geography" },
+                { id: "history", label: "📜 History" },
+                { id: "soccer", label: "⚽ Soccer" },
+                { id: "art-history", label: "🖼️ Art History" },
+                { id: "basketball", label: "🏀 Basketball" },
+                { id: "formula1", label: "🏎️ Formula 1" },
+                { id: "music", label: "🎵 Music" },
+              ]}
+              title="Recent"
+              showChevron={false}  // Hides the chevrons and makes buttons fill width
+            />
+          </div>
         </div>
 
         {/* Profile Info Component */}
