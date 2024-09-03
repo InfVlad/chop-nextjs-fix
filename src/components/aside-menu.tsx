@@ -6,6 +6,7 @@ import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import Logo from "@/components/logo";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import SearchScreen from "@/app/[locale]/(dashboard)/(routes)/search/page";
 import NavLink from "@/components/nav-link";
 import { cn } from "@/lib/utils";
@@ -60,7 +61,11 @@ export default function AsideMenu({ }) {
           isCollapsed ? "justify-center" : "justify-between mb-4"
         )}
       >
-        {!isCollapsed && <Logo />}
+        {!isCollapsed &&(
+            <Link href={"/"}>
+                <Logo />
+            </Link>
+        )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className={cn(isCollapsed && "flex justify-center w-full")}
