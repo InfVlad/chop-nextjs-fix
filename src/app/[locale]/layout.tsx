@@ -14,6 +14,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { PHProvider } from "./providers";
 import dynamic from "next/dynamic";
+import GoogleAdsense from '@/components/google-adsense'
 
 const PostHogPageView = dynamic(() => import("./posthog-page-view"), {
   ssr: false,
@@ -56,6 +57,7 @@ export default function RootLayout({
                 <UserProvider>
                   <PostHogPageView />
                   {children}
+                  <GoogleAdsense pId="（AdsenseのID）" />
                   <Analytics mode={"production"} />
                   <SpeedInsights />
                 </UserProvider>

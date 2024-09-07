@@ -181,7 +181,8 @@
   },
   "LandingFooter": {
     "companyName": "Chop Inc.",
-    "allRightsReserved": "All rights reserved."
+    "allRightsReserved": "All rights reserved.",
+    "source": "Source"
   },
   "ContactPage": {
     "contact": "Contact",

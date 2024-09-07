@@ -13,7 +13,7 @@ export default function LandingFooter() {
                 className="hover:cursor-pointer underline-offset-4 hover:underline text-sm"
                 onClick={() => window.open("https://github.com/alvropena/chop-nextjs", "_blank", "noopener,noreferrer")}
             >
-                Source
+                {t("source")}
             </button>
         </footer>
     )
