@@ -7,7 +7,7 @@ import Logo from "@/components/logo";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import SearchScreen from "@/app/[locale]/(dashboard)/(routes)/search/page";
+import SearchScreen from "@/app/[locale]/explore/page";
 import NavLink from "@/components/nav-link";
 import { cn } from "@/lib/utils";
 
