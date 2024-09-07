@@ -5,7 +5,7 @@ import {
 } from 'next-intl/navigation'
 import { locales } from './i18n'
 
-export const localePrefix = 'always'
+export const localePrefix = 'never';
 
 export const pathnames = {
   '/': '/',

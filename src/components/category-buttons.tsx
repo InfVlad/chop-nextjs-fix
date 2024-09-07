@@ -39,7 +39,7 @@ export default function CategoryButtons({
   };
 
   return (
-    <div className="overflow-hidden max-w-md w-full">
+    <div className="overflow-hidden w-full">
       <h2 className="text-md font-bold mb-2">{t("trendingTitle")}</h2>
       <div className="flex items-center gap-4">
         <button

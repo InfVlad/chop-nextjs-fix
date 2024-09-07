@@ -7,15 +7,16 @@ import { usePathname } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import useLocalePath from '@/hooks/use-local-path';
 
 export default function ProfilePage() {
   // Inline useLocalePath logic
   const pathname = usePathname();
   const locale = pathname.split('/')[1];
-  const getLocalizedPath = (path: string) => `/${locale}${path}`;
+  const {getLocalizedPath} = useLocalePath();
 
   return (
-    <div className="flex justify-center h-2/3 text-foreground p-4">
+    <div className="flex justify-center h-2/3 text-foreground p-4 max-w-md">
       <div className="flex flex-col space-6 w-full rounded-md">
         <div className='flex flex-row ml-4 items-center'>
           {/* Profile Picture */}

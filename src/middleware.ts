@@ -18,7 +18,7 @@ const customMiddleware: CustomMiddleware = async (req) => {
 const intlMiddleware = createMiddleware({
   locales,
   defaultLocale: "en",
-  localePrefix,
+  localePrefix
 });
 const authMiddleware = withMiddlewareAuthRequired(async function middleware(
   req: NextRequest
