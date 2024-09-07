@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import AsideMenu from "../../../../components/aside-menu";
-import BottomTabNavigation from "../../../../components/bottom-tab-navigation";
-import NavLink from "../../../../components/nav-link"; // Import NavLink if it's used directly here
+import AsideMenu from "../../../components/aside-menu";
+import BottomTabNavigation from "../../../components/bottom-tab-navigation";
+import NavLink from "../../../components/nav-link"; // Import NavLink if it's used directly here
 
 export default function DashboardLayout({
   children,

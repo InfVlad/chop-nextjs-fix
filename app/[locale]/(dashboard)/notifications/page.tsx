@@ -1,10 +1,10 @@
 "use client";
-import { useSchemaStore } from "../../../../../providers/schema-store-provider";
+import { useSchemaStore } from "../../../../providers/schema-store-provider";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { notificationsPh } from "../../../../../data/notifications/notifications-ph";
-import { NotificationList } from "../../../../../components/notifications/notification-list";
+import { NotificationList } from "../../../../components/notifications/notification-list";
 import { Notification } from "../../../../../data/notifications/notifications-t";
 import { format, isToday, isYesterday, subDays, isSameMonth } from 'date-fns';
 

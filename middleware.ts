@@ -5,7 +5,7 @@ import { locales } from "./i18n";
 import { localePrefix } from "./navigation";
 
 // Definir las rutas protegidas
-const protectedRoutes = ["/home", "/profile", "/settings"];
+const protectedRoutes = ["/home", "/settings", "/notifications", "explore"];
 
 // Middleware de autenticación
 

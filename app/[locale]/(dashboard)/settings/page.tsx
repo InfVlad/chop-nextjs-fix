@@ -1,9 +1,9 @@
 // components/SettingsScreen.tsx
 "use client";
-import { useSchemaStore } from "../../../../../providers/schema-store-provider";
-import LanguageCombobox from "../../../../../components/language-combobox";
+import { useSchemaStore } from "../../../../providers/schema-store-provider";
+import LanguageCombobox from "../../../../components/language-combobox";
 import { useTranslations } from "next-intl";
-import { ThemeToggle } from "../../../../../components/theme-toggle";
+import { ThemeToggle } from "../../../../components/theme-toggle";
 import { useRouter } from "next/navigation";
 import SettingSection from "./_components/setting-section";
 import SettingItem from "./_components/setting-item";

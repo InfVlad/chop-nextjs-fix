@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Input } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
+import { Input } from "../../../../components/ui/input";
+import { Button } from "../../../../components/ui/button";
 import { BadgeCheck, SearchIcon, X } from "lucide-react";
-import { useSchemaStore } from "../../../providers/schema-store-provider";
-import TopicButtons from "../../../components/topic-buttons";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
+import { useSchemaStore } from "../../../../providers/schema-store-provider";
+import TopicButtons from "../../../../components/topic-buttons";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
 import { useTranslations } from "next-intl";
 import { userProfiles, topics } from "../../../data/search/userProfiles";
 
