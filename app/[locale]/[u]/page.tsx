@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { format } from 'date-fns';
-import { profilePh } from '../../../../../data/profile/profile-ph';
+import { profilePh } from '../../../data/profile/profile-ph';
 import { LineChart } from 'lucide-react';
 import { PersonIcon } from '@radix-ui/react-icons';
 import { Button } from "../../../components/ui/button";

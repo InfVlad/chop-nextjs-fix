@@ -8,7 +8,7 @@ import { useSchemaStore } from "../../../../providers/schema-store-provider";
 import TopicButtons from "../../../../components/topic-buttons";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
 import { useTranslations } from "next-intl";
-import { userProfiles, topics } from "../../../data/search/userProfiles";
+import { userProfiles, topics } from "../../../../data/explore/user-profiles";
 
 export default function SearchPage() {
   const t = useTranslations("SearchPage");
