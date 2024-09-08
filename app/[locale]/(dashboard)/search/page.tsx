@@ -9,6 +9,7 @@ import TopicButtons from "../../../../components/topic-buttons";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar";
 import { useTranslations } from "next-intl";
 import { userProfiles, topics } from "../../../../data/explore/user-profiles";
+import { filterUserProfiles, filterTopics, updateRecentSearches, removeRecentSearch } from "../../../../lib/search-utils";
 
 export default function SearchPage() {
   const t = useTranslations("SearchPage");
@@ -18,7 +19,7 @@ export default function SearchPage() {
   const [selectedTopic, setSelectedTopic] = useState("geography");
 
   const {
-    recentSearches = [], // Default to an empty array
+    recentSearches = [],
     setRecentSearches,
   } = useSchemaStore((state) => state);
 
@@ -32,15 +33,8 @@ export default function SearchPage() {
 
   const handleSearch = () => {
     if (searchQuery) {
-      const filteredUserProfiles = userProfiles.filter(profile =>
-        profile.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        profile.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-
-      const filteredTopics = topics.filter(topic =>
-        topic.label.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-
+      const filteredUserProfiles = filterUserProfiles(userProfiles, searchQuery);
+      const filteredTopics = filterTopics(topics, searchQuery);
       setSearchResults([...filteredUserProfiles, ...filteredTopics]);
     } else {
       setSearchResults([]);
@@ -49,31 +43,12 @@ export default function SearchPage() {
 
   const handleSearchResultClick = (result: any) => {
     if (result) {
-      setRecentSearches((prev = []) => {
-        const existingIndex = prev.findIndex(
-          (item) => item.id === result.id || item.label === result.label
-        );
-
-        let updatedRecentSearches;
-        if (existingIndex !== -1) {
-          // Move the existing item to the end of the list (most recent)
-          updatedRecentSearches = [...prev];
-          updatedRecentSearches.splice(existingIndex, 1);
-          updatedRecentSearches.push(result);
-        } else {
-          // Add new search result to the end of the list
-          updatedRecentSearches = [...prev, result];
-        }
-
-        return updatedRecentSearches.slice(-7); // Keep only the last 7 searches
-      });
+      setRecentSearches((prev = []) => updateRecentSearches(prev, result));
     }
   };
 
   const handleDeleteRecentSearch = (id: string | undefined) => {
-    setRecentSearches((prev = []) =>
-      prev.filter((search) => search.id !== id && search.label !== id)
-    );
+    setRecentSearches((prev = []) => removeRecentSearch(prev, id));
   };
 
   return (
@@ -95,7 +70,7 @@ export default function SearchPage() {
         <TopicButtons
           selectedTopic={selectedTopic}
           handleTopicClick={setSelectedTopic}
-          topics={topics} // Use the placeholder topics
+          topics={topics}
         />
       )}
 
