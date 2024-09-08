@@ -1,3 +1,5 @@
+import { SearchType } from "../components/search/types/search-type";
+
 // Filter user profiles based on the search query
 export const filterUserProfiles = (userProfiles: any[], searchQuery: string) => {
     return userProfiles.filter(profile =>
@@ -13,8 +15,7 @@ export const filterTopics = (topics: any[], searchQuery: string) => {
     );
 };
 
-// Handle adding search results to recent searches
-export const updateRecentSearches = (recentSearches: any[], result: any) => {
+export const updateRecentSearches = (recentSearches: SearchType[], result: SearchType): SearchType[] => {
     const existingIndex = recentSearches.findIndex(
         (item) => item.id === result.id || item.label === result.label
     );
@@ -31,7 +32,8 @@ export const updateRecentSearches = (recentSearches: any[], result: any) => {
     return updatedRecentSearches.slice(-7); // Keep only the last 7 searches
 };
 
-// Handle deleting a specific search result from recent searches
-export const removeRecentSearch = (recentSearches: any[], id: string | undefined) => {
+export const removeRecentSearch = (recentSearches: SearchType[], id: string): SearchType[] => {
     return recentSearches.filter((search) => search.id !== id && search.label !== id);
 };
+
+

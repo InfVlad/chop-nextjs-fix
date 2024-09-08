@@ -1,13 +1,8 @@
 import { NotificationItem } from "./notification-item";
 import { NotificationType } from "../../data/notification/notification-type";
+import { NotificationListType } from "./types/notification-list-type";
 
-interface NotificationListProps {
-    groupedNotifications: Record<string, NotificationType[]>;
-    onMarkAsRead: (id: number) => void;
-    onFollow: (userId: number) => void;
-}
-
-export function NotificationList({ groupedNotifications, onMarkAsRead, onFollow }: NotificationListProps) {
+export function NotificationList({ groupedNotifications, onMarkAsRead, onFollow }: NotificationListType) {
     return (
         <>
             {Object.keys(groupedNotifications).map(group => (

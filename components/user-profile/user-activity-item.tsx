@@ -1,29 +1,12 @@
 import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { BadgeCheck, HeartIcon } from "lucide-react";
-import { format } from 'date-fns';
+import { formatActivityTimestamp, formatNumber } from '../../lib/format-utils';
+import { UserActivityItemType } from './types/user-activity-item-type';
 
-function formatActivityTimestamp(timestamp: string) {
-    const date = new Date(timestamp);
-    const currentYear = new Date().getFullYear();
-    const activityYear = date.getFullYear();
-
-    return currentYear === activityYear ? format(date, "MMM d") : format(date, "MMM d, yyyy");
-}
-
-function formatNumber(num: number): string {
-    if (num < 1000) {
-        return num.toString();
-    } else if (num < 1000000) {
-        return (num / 1000).toFixed(1) + 'k';
-    } else {
-        return (num / 1000000).toFixed(1) + 'm';
-    }
-}
-
-function ActivityItem({ activity }) {
+export function UserActivityItem({ activity }: UserActivityItemType) {
     const [liked, setLiked] = useState(false);
-    const [likes, setLikes] = useState(activity.likes || 0); // Assuming activity.likes exists
+    const [likes, setLikes] = useState(activity.likes || 0);
 
     const handleHeartClick = () => {
         if (!liked) {
@@ -46,7 +29,7 @@ function ActivityItem({ activity }) {
             <div className="flex-grow">
                 <div className="flex items-center space-x-2">
                     <span className="font-bold">{activity.name}</span>
-                    {activity.verified && <BadgeCheck className="text-blue-500" />} {/* Updated to text-blue-500 */}
+                    {activity.verified && <BadgeCheck className="text-blue-500" />}
                     <span className="text-muted-foreground">@{activity.username}</span>
                     <span className="text-muted-foreground">&bull;</span>
                     <span className="text-muted-foreground">{formatActivityTimestamp(activity.timestamp)}</span>
@@ -59,20 +42,9 @@ function ActivityItem({ activity }) {
                 onClick={handleHeartClick}
             >
                 <HeartIcon className={`transition-colors ${liked ? "text-red-500 fill-current" : "text-muted-foreground group-hover:text-red-500"}`} />
-                <span className={`text-sm transition-colors ${liked ? "text-red-500" : "text-muted-foreground group-hover:text-red-500"}`}>{formatNumber(likes)}</span>
-            </div>
-        </div>
-    );
-}
-
-export function ProfileActivity({ activities }) {
-    return (
-        <div>
-            <h3 className="text-xl font-semibold my-4">Activity</h3>
-            <div className="space-y-4">
-                {activities.map((activity, index) => (
-                    <ActivityItem key={index} activity={activity} />
-                ))}
+                <span className={`text-sm transition-colors ${liked ? "text-red-500" : "text-muted-foreground group-hover:text-red-500"}`}>
+                    {formatNumber(likes)}
+                </span>
             </div>
         </div>
     );

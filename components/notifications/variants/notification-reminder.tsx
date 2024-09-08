@@ -1,12 +1,7 @@
 import { getFormattedDate } from "../../../lib/format-date";
-import { NotificationType } from "../../../data/notification/notification-type";
+import { NotificationReminderType } from "../types/notification-reminder-type";
 
-interface ReminderNotificationProps {
-    notification: NotificationType;
-    onMarkAsRead: (id: number) => void;
-}
-
-export function ReminderNotification({ notification, onMarkAsRead }: ReminderNotificationProps) {
+export function NotificationReminder({ notification, onMarkAsRead }: NotificationReminderType) {
     return (
         <div className="relative flex flex-col p-2 border-b" onClick={() => onMarkAsRead(notification.id)}>
             <div className="flex justify-between items-center">

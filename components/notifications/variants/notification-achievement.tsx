@@ -1,12 +1,8 @@
 import { format, isToday, isYesterday } from "date-fns";
-import { NotificationType } from "../../../data/notification/notification-type";
+import { NotificationAchievementType } from "../types/notification-achievement-type";
+import { getFormattedDate } from "../../../lib/format-date";
 
-interface AchievementNotificationProps {
-    notification: NotificationType;
-    onMarkAsRead: (id: number) => void;
-}
-
-export function AchievementNotification({ notification, onMarkAsRead }: AchievementNotificationProps) {
+export function NotificationAchievement({ notification, onMarkAsRead }: NotificationAchievementType) {
     if (notification.type !== 'achievement') {
         return null;
     }

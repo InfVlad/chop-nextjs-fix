@@ -4,15 +4,9 @@ import { useState } from "react";
 import { Button } from "../../ui/button";
 import { NotificationAvatar } from "../notification-avatar";
 import { getFormattedDate } from "../../../lib/format-date";
-import { NotificationType } from "../../../data/notification/notification-type";
+import { NotificationFollowType } from "../types/notification-follow-type";
 
-interface FollowNotificationProps {
-    notification: NotificationType;
-    onMarkAsRead: (id: number) => void;
-    onFollow: (userId: number) => void;
-}
-
-export function FollowNotification({ notification, onMarkAsRead, onFollow }: FollowNotificationProps) {
+export function NotificationFollow({ notification, onMarkAsRead, onFollow }: NotificationFollowType) {
     const [isFollowing, setIsFollowing] = useState(false);
 
     const getUserProfileImageUrl = (userId: number): string => {

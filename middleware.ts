@@ -4,29 +4,31 @@ import { NextRequest, NextResponse, NextFetchEvent } from "next/server";
 import { locales } from "./i18n";
 import { localePrefix } from "./navigation";
 
-// Definir las rutas protegidas
-const protectedRoutes = ["/home", "/settings", "/notifications", "explore"];
+// Define the protected routes
+const protectedRoutes = ["/home", "/settings", "/notifications", "/explore"];
 
-// Middleware de autenticación
-
+// Authentication middleware
 type CustomMiddleware = (req: NextRequest) => Promise<NextRequest>;
 const customMiddleware: CustomMiddleware = async (req) => {
   console.log("Custom middleware executed before next-intl");
   return req;
 };
 
+// Middleware for internationalization
 const intlMiddleware = createMiddleware({
   locales,
   defaultLocale: "en",
-  localePrefix
+  localePrefix,
 });
+
+// Middleware for authentication with internationalization support
 const authMiddleware = withMiddlewareAuthRequired(async function middleware(
   req: NextRequest
 ) {
   return intlMiddleware(req) as NextResponse;
 });
 
-// Middleware principal que maneja la lógica de autenticación e internacionalización
+// Main middleware that handles authentication and internationalization logic
 export default async function middleware(
   req: NextRequest,
   event: NextFetchEvent
@@ -39,12 +41,12 @@ export default async function middleware(
     console.log("This route is protected");
     const authResponse = await authMiddleware(req, event);
     if (authResponse) {
-      // Si authMiddleware devuelve una respuesta, la retornamos
+      // If authMiddleware returns a response, return it
       return authResponse as NextResponse;
     }
   }
 
-  // Siempre ejecutamos intlMiddleware
+  // Always execute intlMiddleware
   return intlMiddleware(req) as NextResponse;
 }
 
@@ -55,9 +57,8 @@ export const config = {
     "/home",
     "/search/:path*",
     "/notifications",
-    "/profile",
-    "/followers",
-    "/following",
+    "/:path*/followers",
+    "/:path*/following",
     "/settings",
     "/about",
     "/pricing/:path*",

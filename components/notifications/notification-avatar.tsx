@@ -1,11 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { NotificationAvatarType } from "./types/notification-avatar-type";
 
-interface NotificationAvatarProps {
-    userId: number;
-    imageUrl: string;
-}
-
-export function NotificationAvatar({ userId, imageUrl }: NotificationAvatarProps) {
+export function NotificationAvatar({ userId, imageUrl }: NotificationAvatarType) {
     return (
         <Avatar>
             <AvatarImage src={imageUrl} alt={`User ${userId}`} />
