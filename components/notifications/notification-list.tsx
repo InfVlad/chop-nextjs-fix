@@ -1,14 +1,13 @@
 import { NotificationItem } from "./notification-item";
-import { Notification } from "../../../data/notifications/notifications-t";
+import { NotificationType } from "../../data/notification/notification-type";
 
 interface NotificationListProps {
-    groupedNotifications: Record<string, Notification[]>;
+    groupedNotifications: Record<string, NotificationType[]>;
     onMarkAsRead: (id: number) => void;
     onFollow: (userId: number) => void;
-    onAcceptInvite: (userId: number) => void;
 }
 
-export function NotificationList({ groupedNotifications, onMarkAsRead, onFollow, onAcceptInvite }: NotificationListProps) {
+export function NotificationList({ groupedNotifications, onMarkAsRead, onFollow }: NotificationListProps) {
     return (
         <>
             {Object.keys(groupedNotifications).map(group => (
@@ -21,7 +20,6 @@ export function NotificationList({ groupedNotifications, onMarkAsRead, onFollow,
                                 notification={notification}
                                 onMarkAsRead={onMarkAsRead}
                                 onFollow={onFollow}
-                                onAcceptInvite={onAcceptInvite}
                             />
                         ))}
                     </div>

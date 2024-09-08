@@ -9,7 +9,7 @@ export default function Logo() {
                 height={100}
                 width={100}
                 alt="logo"
-                src={"/logo_d.svg"}
+                src={"/logo.svg"}
             />
         </Link>
     )

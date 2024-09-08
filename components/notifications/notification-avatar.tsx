@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface NotificationAvatarProps {
-    username: string;
+    userId: number;
     imageUrl: string;
 }
 

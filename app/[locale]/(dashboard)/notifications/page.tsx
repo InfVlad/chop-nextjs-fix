@@ -3,13 +3,13 @@ import { useSchemaStore } from "../../../../providers/schema-store-provider";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { notificationsPh } from "../../../../../data/notifications/notifications-ph";
+import { NotificationData } from "../../../../data/notification/notification-data";
+import { NotificationType } from "../../../../data/notification/notification-type";
 import { NotificationList } from "../../../../components/notifications/notification-list";
-import { Notification } from "../../../../../data/notifications/notifications-t";
 import { format, isToday, isYesterday, subDays, isSameMonth } from 'date-fns';
 
-function groupNotifications(notifications: Notification[]): Record<string, Notification[]> {
-    const grouped: Record<string, Notification[]> = {
+function groupNotifications(notifications: NotificationType[]): Record<string, NotificationType[]> {
+    const grouped: Record<string, NotificationType[]> = {
         Today: [],
         Yesterday: [],
         "Last Week": [],
@@ -41,24 +41,20 @@ export default function NotificationsContainer() {
     const router = useRouter();
     const t = useTranslations("");
 
-    const [groupedNotificationsPh, setGroupedNotificationsPh] = useState<Record<string, Notification[]>>({});
+    const [groupedNotifications, setGroupedNotifications] = useState<Record<string, NotificationType[]>>({});
 
     useEffect(() => {
-        const sorted = [...notificationsPh].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        const sorted = [...NotificationData].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
         const grouped = groupNotifications(sorted);
-        setGroupedNotificationsPh(grouped);
+        setGroupedNotifications(grouped);
     }, []);
 
     const handleFollow = (userId: number) => {
         console.log(`Followed user with ID ${userId}`);
     };
 
-    const handleAcceptInvite = (userId: number) => {
-        console.log(`Accepted invite from user with ID ${userId}`);
-    };
-
     const markAsRead = (notificationId: number) => {
-        setGroupedNotificationsPh(prevState => {
+        setGroupedNotifications(prevState => {
             const updatedState = { ...prevState };
             Object.keys(updatedState).forEach(group => {
                 updatedState[group] = updatedState[group].map(notification =>
@@ -74,12 +70,11 @@ export default function NotificationsContainer() {
             <div className="flex flex-col space-y-6 w-full max-w-xl">
                 <h1 className="text-2xl font-semibold">{t("Notifications")}</h1>
                 <NotificationList
-                    groupedNotifications={groupedNotificationsPh}
+                    groupedNotifications={groupedNotifications}
                     onMarkAsRead={markAsRead}
                     onFollow={handleFollow}
-                    onAcceptInvite={handleAcceptInvite}
                 />
-                {Object.keys(groupedNotificationsPh).every(group => groupedNotificationsPh[group].length === 0) && (
+                {Object.keys(groupedNotifications).every(group => groupedNotifications[group].length === 0) && (
                     <h2>No activity yet.</h2>
                 )}
             </div>
